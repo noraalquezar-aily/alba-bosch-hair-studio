@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alba Bosch Hair Studio | Perruqueria de Luxe Femenina</title>
+  <meta name="description" content="Saló de perruqueria femenina de luxe i exclusivitat a Barcelona. Assessorament personalitzat, estilisme editorial, balayage orgànic i tractaments de bellesa capil·lar.">
+  <link rel="stylesheet" href="styles.css?v=55.0">
+</head>
+<body>
+
+  <!-- --- HEADER / NAVIGATION --- -->
+  <header>
+    <div class="container header-container">
+      <a href="#home" class="logo">
+        <span>ALBA BOSCH</span>
+        <span class="logo-studio">HAIR STUDIO</span>
+      </a>
+
+      <!-- Desktop & Mobile navigation -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home" class="active" data-i18n="nav_home">Inici</a></li>
+          <li><a href="#team" data-i18n="nav_team">L'equip</a></li>
+          <li><a href="#services" data-i18n="nav_services">Serveis</a></li>
+          <li><a href="#products" data-i18n="nav_products">Productes</a></li>
+          <li><a href="#before-after" data-i18n="nav_before_after">Abans & Després</a></li>
+          <li><a href="#contact" data-i18n="nav_contact">Contacte</a></li>
+          <li class="nav-private"><a href="admin.html" data-i18n="nav_private">Àrea privada 🔒</a></li>
+        </ul>
+
+        <!-- Cart trigger -->
+        <button class="cart-trigger" aria-label="Shopping Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count">0</span>
+        </button>
+
+        <!-- Language selector -->
+        <div class="lang-selector">
+          <button class="lang-trigger">
+            <span class="active-lang-text">CA</span>
+            <svg viewBox="0 0 10 6">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <ul class="lang-dropdown">
+            <li><button data-lang="ca">Català</button></li>
+            <li><button data-lang="es">Español</button></li>
+            <li><button data-lang="en">English</button></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Hamburger menu (mobile only) -->
+      <button class="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- --- HERO SECTION --- -->
+  <section id="home" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content reveal-on-scroll">
+        <span class="hero-subtitle-tag" data-i18n="hero_welcome_tag">WELCOME TO HAIR EXCLUSIVITY</span>
+        
+        <h1 class="hero-editorial-title">
+          <span data-i18n="hero_title_1">ALBA BOSCH</span>
+          <span class="highlight-accent" data-i18n="hero_title_2">HAIR STUDIO</span>
+        </h1>
+        
+        <div class="hero-divider">
+          <span class="divider-line"></span>
+          <span class="divider-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2Z" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="divider-line"></span>
+        </div>
+        
+        <p class="hero-intro" data-i18n="hero_desc_new">
+          Un espai de bellesa i benestar on el nostre equip d’experts cuida la salut del teu cabell i realça la teva <span class="accent-caramel-text">essència única</span>.
+        </p>
+        
+        <button class="btn btn-primary hero-btn-editorial booking-trigger">
+          <span data-i18n="hero_btn_text_new">BOOK AN APPOINTMENT</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+      
+      <div class="hero-image-wrapper-editorial">
+        <!-- SVG Organic Curved Line -->
+        <div class="hero-organic-curve-svg">
+          <svg viewBox="0 0 100 100" fill="none" preserveAspectRatio="none">
+            <path d="M -5,110 C 15,40 50,5 105,10" stroke="var(--color-accent-caramel)" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="hero-image-container-editorial">
+          <img src="assets/hero.jpg" alt="Alba Bosch Hair Studio" class="hero-image">
+        </div>
+        
+        <!-- Elegant circular stamp badge -->
+        <div class="hero-stamp-badge">
+          <div class="hero-stamp-badge-inner">
+            <svg class="stamp-ornament" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2Z" fill="currentColor"/>
+            </svg>
+            <span class="stamp-title">100%</span>
+            <span class="stamp-desc" data-i18n="hero_stamp_desc">ORGANIC & PREMIUM</span>
+          </div>
+        </div>
+
+        <!-- Vertical Barcelona Detail -->
+        <div class="hero-vertical-detail">
+          <span class="vertical-text">BARCELONA</span>
+          <span class="vertical-line"></span>
+          <span class="vertical-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Franja inferior (Values Strip) -->
+    <div class="hero-values-strip">
+      <div class="container values-strip-grid">
+        <div class="value-item">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M2 22c0-5.5 4.5-10 10-10h10v2C22 19.5 17.5 24 12 24H2v-2Z" />
+              <path d="M12 12c-5.5 0-10 4.5-10 10" />
+              <path d="M22 2S14.5 5 12 12" />
+            </svg>
+          </div>
+          <span class="value-text" data-i18n="value_organic">PRODUCTES NATURALS</span>
+        </div>
+
+        <div class="value-item">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M12 14v8M9 22h6" />
+            </svg>
+          </div>
+          <span class="value-text" data-i18n="value_care">CURA PERSONALITZADA 100% A MIDA</span>
+        </div>
+
+        <div class="value-item">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <circle cx="6" cy="6" r="3" />
+              <circle cx="6" cy="18" r="3" />
+              <path d="M20 4L8.5 11M20 20L8.5 13M8.12 12h5.76" />
+            </svg>
+          </div>
+          <span class="value-text" data-i18n="value_techniques">TÈCNIQUES AVANÇADES</span>
+        </div>
+
+        <div class="value-item">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+          </div>
+          <span class="value-text" data-i18n="value_premium">EXPERIÈNCIA PREMIUM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- --- TEAM SECTION ("L'EQUIP") --- -->
+  <section id="team" class="section-padding">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="section-subtitle" data-i18n="team_subtitle">L'equip</span>
+        <h2 class="section-title" data-i18n="team_title">Professionals al servei de la teva imatge</h2>
+      </div>
+
+      <div class="team-grid editorial-team-grid">
+        <!-- Stylist 1 -->
+        <div class="team-card team-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="team-flip-card-inner">
+            <!-- Front -->
+            <div class="team-flip-card-front">
+              <img src="assets/team-alba.jpg" alt="Alba Bosch" class="team-img">
+            </div>
+            <!-- Back -->
+            <div class="team-flip-card-back">
+              <div class="team-flip-card-back-content">
+                <span class="team-role" data-i18n="team_role_alba">Fundadora i Estilista Principal</span>
+                <h3 class="team-name">Alba Bosch</h3>
+                <p class="team-bio" data-i18n="team_bio_alba">
+                  Amb més de 12 anys d'experiència internacional a París i Londres, és especialista en talls de precisió i disseny d'imatge personalitzada.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stylist 2 -->
+        <div class="team-card team-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="team-flip-card-inner">
+            <!-- Front -->
+            <div class="team-flip-card-front">
+              <img src="assets/team-elena.jpg" alt="Elena Muñoz" class="team-img">
+            </div>
+            <!-- Back -->
+            <div class="team-flip-card-back">
+              <div class="team-flip-card-back-content">
+                <span class="team-role" data-i18n="team_role_elena">Especialista en Color</span>
+                <h3 class="team-name">Elena Muñoz</h3>
+                <p class="team-bio" data-i18n="team_bio_elena">
+                  Mestra de la llum i el color. Creadora de balayages naturals i experta en coloracions orgàniques i lliures de tòxics.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stylist 3 -->
+        <div class="team-card team-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="team-flip-card-inner">
+            <!-- Front -->
+            <div class="team-flip-card-front">
+              <img src="assets/team-sofia.jpg" alt="Sofia Gomez" class="team-img">
+            </div>
+            <!-- Back -->
+            <div class="team-flip-card-back">
+              <div class="team-flip-card-back-content">
+                <span class="team-role" data-i18n="team_role_sofia">Tractaments i Tendències</span>
+                <h3 class="team-name">Sofia Gomez</h3>
+                <p class="team-bio" data-i18n="team_bio_sofia">
+                  Experta en salut capil·lar i teràpies d'hidratació profunda, a més dels talls i pentinats més contemporanis.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stylist 4 -->
+        <div class="team-card team-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="team-flip-card-inner">
+            <!-- Front -->
+            <div class="team-flip-card-front">
+              <img src="assets/team-lucia.jpg" alt="Lucia Vidal" class="team-img">
+            </div>
+            <!-- Back -->
+            <div class="team-flip-card-back">
+              <div class="team-flip-card-back-content">
+                <span class="team-role" data-i18n="team_role_lucia">Estilista Sènior</span>
+                <h3 class="team-name">Lucia Vidal</h3>
+                <p class="team-bio" data-i18n="team_bio_lucia">
+                  Experta en talls de precisió, assessorament d'imatge i pentinats per a esdeveniments especials.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stylist 5 -->
+        <div class="team-card team-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="team-flip-card-inner">
+            <!-- Front -->
+            <div class="team-flip-card-front">
+              <img src="assets/team-marina.jpg" alt="Marina Silva" class="team-img">
+            </div>
+            <!-- Back -->
+            <div class="team-flip-card-back">
+              <div class="team-flip-card-back-content">
+                <span class="team-role" data-i18n="team_role_marina">Canvis de Look</span>
+                <h3 class="team-name">Marina Silva</h3>
+                <p class="team-bio" data-i18n="team_bio_marina">
+                  Mestra dels talls transformadors i pentinats moderns. Afegeix vitalitat i frescor a cada cabell.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stylist 6 -->
+        <div class="team-card team-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="team-flip-card-inner">
+            <!-- Front -->
+            <div class="team-flip-card-front">
+              <img src="assets/team-clara.jpg" alt="Clara Pons" class="team-img">
+            </div>
+            <!-- Back -->
+            <div class="team-flip-card-back">
+              <div class="team-flip-card-back-content">
+                <span class="team-role" data-i18n="team_role_clara">Terapeuta Capil·lar</span>
+                <h3 class="team-name">Clara Pons</h3>
+                <p class="team-bio" data-i18n="team_bio_clara">
+                  Dedicada a la salut capil·lar profunda, teràpies naturals i hidromassatge sensorial.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- SERVICES SECTION ("SERVEIS") --- -->
+  <section id="services" class="section-padding services">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="section-subtitle" data-i18n="services_subtitle">La nostra carta</span>
+        <h2 class="section-title" data-i18n="services_title">Serveis Premium Dissenyats per a tu</h2>
+      </div>
+
+      <!-- Editorial Services Showcase (Asymmetric Rows) -->
+      <div class="editorial-services-showcase">
+        
+        <!-- Category 1: Talls (Cuts) -->
+        <div class="services-row reveal-on-scroll">
+          <div class="services-row-content">
+            <h3 class="services-row-title" data-i18n="services_cat_cuts">Talls</h3>
+            <p class="services-row-desc" data-i18n="services_cuts_desc">Talls dissenyats per esculpir la teva silueta facial i ressaltar la teva bellesa natural.</p>
+            
+            <div class="services-items-list">
+              <!-- Item 1 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_cut_name">Tall de cabell</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">55€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_cut_desc">Assessorament d'imatge, rentat sensorial, tall i eixugat.</p>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_cut_styling_name">Tall i pentinat</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">75€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_cut_styling_desc">Assessorament d'imatge, rentat sensorial, tall personalitzat i pentinat.</p>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_styling_name">Pentinat Editorial</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">45€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_styling_desc">Pentinat sofisticat adaptat a la teva estructura facial i estil personal.</p>
+              </div>
+            </div>
+          </div>
+          <div class="services-row-image-wrapper">
+            <img src="assets/team-alba.jpg" alt="Talls & Pentinats" class="services-row-image">
+          </div>
+        </div>
+
+        <!-- Category 2: Color (Inverted layout) -->
+        <div class="services-row inverted reveal-on-scroll">
+          <div class="services-row-image-wrapper">
+            <img src="assets/team-elena.jpg" alt="Coloracions de Llums" class="services-row-image">
+          </div>
+          <div class="services-row-content">
+            <h3 class="services-row-title" data-i18n="services_cat_color">Color</h3>
+            <p class="services-row-desc" data-i18n="services_color_desc">Tècniques exclusives d'il·luminació i bany orgànic per omplir de llum el teu cabell.</p>
+            
+            <div class="services-items-list">
+              <!-- Item 1 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_color_name">Coloració Orgànica</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">65€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_color_desc">Bany de color 100% orgànic i lliure d'amoníac per a una brillantor intensa.</p>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_balayage_name">Balayage Signature</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">140€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_balayage_desc">Tècnica de degradat personalitzat per aportar llum natural al teu rostre.</p>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_highlights_name">Metxes Clàssiques</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">110€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_highlights_desc">Il·luminació tradicional personalitzada per a donar dimensió i contrast.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 3: Tractaments -->
+        <div class="services-row reveal-on-scroll">
+          <div class="services-row-content">
+            <h3 class="services-row-title" data-i18n="services_cat_treatments">Tractaments</h3>
+            <p class="services-row-desc" data-i18n="services_treatments_desc">Regeneració capil·lar intensiva i teràpies sensorials per retornar la salut al teu cabell.</p>
+            
+            <div class="services-items-list">
+              <!-- Item 1 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_hydration_name">Tractament de Cèl·lules Mare</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">90€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_hydration_desc">Tractament regenerador intensiu que torna la brillantor i el vigor original al cabell.</p>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_detox_name">Detox Capil·lar Ayurvèdic</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">60€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_detox_desc">Exfoliació i massatge cranial amb olis essencials per a un cuir cabellut sa.</p>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="service-menu-item">
+                <div class="service-item-main">
+                  <span class="service-item-name" data-i18n="service_repair_name">Hidratació Profunda</span>
+                  <span class="service-item-dots"></span>
+                  <span class="service-item-price">70€</span>
+                </div>
+                <p class="service-item-desc" data-i18n="service_repair_desc">Cura reparadora intensa per aportar suavitat i nutrició al cabell sec.</p>
+              </div>
+            </div>
+          </div>
+          <div class="services-row-image-wrapper">
+            <img src="assets/salon-ambiance.jpg" alt="Tractaments Capil·lars" class="services-row-image">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- --- PRODUCTS SECTION ("PRODUCTES") --- -->
+  <section id="products" class="section-padding products">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="section-subtitle" data-i18n="products_subtitle">La nostra selecció</span>
+        <h2 class="section-title" data-i18n="products_title">Cura Premium a Casa</h2>
+      </div>
+
+      <div class="products-grid reveal-on-scroll">
+        <!-- Product 1 -->
+        <div class="product-card reveal-on-scroll">
+          <div class="product-img-wrapper">
+            <img src="assets/product-shampoo.jpg" alt="Organic Hydrating Shampoo" class="product-img">
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product_shampoo_name">Xampú Hidratant Orgànic</h3>
+            <p class="product-desc" data-i18n="product_shampoo_desc">Neteja profunda i suau amb extractes botànics naturals per a cabells secs.</p>
+            <span class="product-price">28€</span>
+            <div class="product-quantity-control">
+              <button type="button" class="qty-btn qty-minus">−</button>
+              <input type="number" class="qty-input" value="1" min="1" readonly>
+              <button type="button" class="qty-btn qty-plus">+</button>
+            </div>
+            <button class="btn btn-primary add-to-cart-btn" data-product-id="shampoo" data-i18n="btn_add_to_cart">Afegir al carret</button>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card reveal-on-scroll">
+          <div class="product-img-wrapper">
+            <img src="assets/product-oil.jpg" alt="Signature Hair Oil" class="product-img">
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product_oil_name">Oli Capil·lar Signature</h3>
+            <p class="product-desc" data-i18n="product_oil_desc">Elixir nutritiu de tacte sec que aporta una brillantor instantània i elimina el frizz.</p>
+            <span class="product-price">34€</span>
+            <div class="product-quantity-control">
+              <button type="button" class="qty-btn qty-minus">−</button>
+              <input type="number" class="qty-input" value="1" min="1" readonly>
+              <button type="button" class="qty-btn qty-plus">+</button>
+            </div>
+            <button class="btn btn-primary add-to-cart-btn" data-product-id="oil" data-i18n="btn_add_to_cart">Afegir al carret</button>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card reveal-on-scroll">
+          <div class="product-img-wrapper">
+            <img src="assets/product-cream.jpg" alt="Editorial Styling Cream" class="product-img">
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" data-i18n="product_cream_name">Crema d'Estilisme Editorial</h3>
+            <p class="product-desc" data-i18n="product_cream_desc">Definició suau i protecció tèrmica per a un acabat sedós i de passarel·la.</p>
+            <span class="product-price">30€</span>
+            <div class="product-quantity-control">
+              <button type="button" class="qty-btn qty-minus">−</button>
+              <input type="number" class="qty-input" value="1" min="1" readonly>
+              <button type="button" class="qty-btn qty-plus">+</button>
+            </div>
+            <button class="btn btn-primary add-to-cart-btn" data-product-id="cream" data-i18n="btn_add_to_cart">Afegir al carret</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- BEFORE & AFTER SECTION ("ABANS & DESPRÉS") --- -->
+  <section id="before-after" class="section-padding before-after">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="section-subtitle" data-i18n="before_after_subtitle">Els nostres resultats</span>
+        <h2 class="section-title" data-i18n="before_after_title">Transformacions Reals</h2>
+      </div>
+
+      <!-- Active Slide Title/Description (above the carousel, clean and centered) -->
+      <div class="carousel-caption-container reveal-on-scroll" style="text-align: center; margin-top: -2rem; margin-bottom: 3.5rem;">
+        <h3 id="carousel-active-title" class="carousel-active-title" style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--text-dark);" data-i18n="caption_balayage">Balayage Signature</h3>
+      </div>
+
+      <div class="carousel-viewport reveal-on-scroll">
+        <button type="button" class="carousel-arrow arrow-prev" aria-label="Anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24">
+            <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="carousel-track">
+          <!-- Slide 1: Balayage Signature -->
+          <div class="carousel-slide active" data-index="0">
+            <div class="comparison-slider">
+              <img src="assets/carousel-1-after.jpg" alt="Cabell Després - Balayage" class="after-image">
+              <img src="assets/carousel-1-before.jpg" alt="Cabell Abans - Balayage" class="before-image">
+              <div class="slider-line"></div>
+              <button type="button" class="slider-handle" aria-label="Arrossegar divisor">
+                <svg viewBox="0 0 24 24"><path d="M6 19h2V5H6v14zm8-14v14h2V5h-2z" /></svg>
+              </button>
+              <span class="slider-label label-before" data-i18n="slider_before">Before</span>
+              <span class="slider-label label-after" data-i18n="slider_after">After</span>
+            </div>
+          </div>
+
+          <!-- Slide 2: Coure Editorial -->
+          <div class="carousel-slide next" data-index="1">
+            <div class="comparison-slider">
+              <img src="assets/carousel-2-after.jpg" alt="Cabell Després - Coure" class="after-image">
+              <img src="assets/carousel-2-before.jpg" alt="Cabell Abans - Coure" class="before-image">
+              <div class="slider-line"></div>
+              <button type="button" class="slider-handle" aria-label="Arrossegar divisor">
+                <svg viewBox="0 0 24 24"><path d="M6 19h2V5H6v14zm8-14v14h2V5h-2z" /></svg>
+              </button>
+              <span class="slider-label label-before" data-i18n="slider_before">Before</span>
+              <span class="slider-label label-after" data-i18n="slider_after">After</span>
+            </div>
+          </div>
+
+          <!-- Slide 3: Clarificació Blonde -->
+          <div class="carousel-slide next2" data-index="2">
+            <div class="comparison-slider">
+              <img src="assets/carousel-3-after.jpg" alt="Cabell Després - Blonde" class="after-image">
+              <img src="assets/carousel-3-before.jpg" alt="Cabell Abans - Blonde" class="before-image">
+              <div class="slider-line"></div>
+              <button type="button" class="slider-handle" aria-label="Arrossegar divisor">
+                <svg viewBox="0 0 24 24"><path d="M6 19h2V5H6v14zm8-14v14h2V5h-2z" /></svg>
+              </button>
+              <span class="slider-label label-before" data-i18n="slider_before">Before</span>
+              <span class="slider-label label-after" data-i18n="slider_after">After</span>
+            </div>
+          </div>
+
+          <!-- Slide 4: Xocolata Profund -->
+          <div class="carousel-slide prev2" data-index="3">
+            <div class="comparison-slider">
+              <img src="assets/carousel-4-after.jpg" alt="Cabell Després - Xocolata" class="after-image">
+              <img src="assets/carousel-4-before.jpg" alt="Cabell Abans - Xocolata" class="before-image">
+              <div class="slider-line"></div>
+              <button type="button" class="slider-handle" aria-label="Arrossegar divisor">
+                <svg viewBox="0 0 24 24"><path d="M6 19h2V5H6v14zm8-14v14h2V5h-2z" /></svg>
+              </button>
+              <span class="slider-label label-before" data-i18n="slider_before">Before</span>
+              <span class="slider-label label-after" data-i18n="slider_after">After</span>
+            </div>
+          </div>
+
+          <!-- Slide 5: Tractament Anti-Frizz -->
+          <div class="carousel-slide prev" data-index="4">
+            <div class="comparison-slider">
+              <img src="assets/carousel-5-after.jpg" alt="Cabell Després - Gloss" class="after-image">
+              <img src="assets/carousel-5-before.jpg" alt="Cabell Abans - Gloss" class="before-image">
+              <div class="slider-line"></div>
+              <button type="button" class="slider-handle" aria-label="Arrossegar divisor">
+                <svg viewBox="0 0 24 24"><path d="M6 19h2V5H6v14zm8-14v14h2V5h-2z" /></svg>
+              </button>
+              <span class="slider-label label-before" data-i18n="slider_before">Before</span>
+              <span class="slider-label label-after" data-i18n="slider_after">After</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="carousel-arrow arrow-next" aria-label="Següent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24">
+            <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <!-- Dots indicators -->
+        <div class="carousel-dots">
+          <span class="dot active" data-index="0"></span>
+          <span class="dot" data-index="1"></span>
+          <span class="dot" data-index="2"></span>
+          <span class="dot" data-index="3"></span>
+          <span class="dot" data-index="4"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- CONTACT & BOOKING SECTION --- -->
+  <section id="contact" class="section-padding">
+    <div class="container reveal-on-scroll">
+      
+      <div class="section-header">
+        <span class="section-subtitle" data-i18n="contact_subtitle">Contacte</span>
+        <h2 class="contact-title" data-i18n="contact_title">Estem aquí per a tu</h2>
+        <p class="contact-intro" data-i18n="contact_desc">
+          Troba tota la informació de contacte, horaris d'obertura i ubicació del nostre saló. No dubtis a trucar-nos o escriure'ns.
+        </p>
+      </div>
+
+      <div class="contact-layout-grid">
+        
+        <!-- Left: Location & Maps -->
+        <div class="contact-layout-column">
+          <div class="contact-card-box">
+            <h3 class="contact-card-title" data-i18n="contact_label_address">Ubicació</h3>
+            <div class="contact-card-content">
+              <h4 class="contact-salon-name">Alba Bosch Hair Studio</h4>
+              <p class="contact-address-text" data-i18n="contact_value_address">Carrer de Balmes, 124, Barcelona</p>
+            </div>
+            
+            <!-- Maps placeholder card (placed directly under location information) -->
+            <div class="contact-map-card compact-map">
+              <div class="map-placeholder">
+                <!-- Interactive SVG Map Preview -->
+                <svg class="map-svg-preview" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice">
+                  <!-- Base Ground -->
+                  <rect width="100%" height="100%" fill="#f3efe9"/>
+                  
+                  <!-- Barcelona Eixample grid blocks (Beige/Sand) -->
+                  <!-- Row 1 -->
+                  <rect x="-20" y="-20" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="80" y="-20" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="180" y="-20" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="280" y="-20" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="380" y="-20" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  
+                  <!-- Row 2 -->
+                  <rect x="-20" y="80" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="80" y="80" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="180" y="80" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="280" y="80" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="380" y="80" width="80" height="80" rx="6" fill="#e5dfd5"/>
+
+                  <!-- Row 3 -->
+                  <rect x="-20" y="180" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="80" y="180" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="180" y="180" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="280" y="180" width="80" height="80" rx="6" fill="#e5dfd5"/>
+                  <rect x="380" y="180" width="80" height="80" rx="6" fill="#e5dfd5"/>
+
+                  <!-- Street Name Labels (Subtle font styling) -->
+                  <text x="30" y="72" font-family="var(--font-sans), sans-serif" font-size="7" fill="#8c8070" letter-spacing="0.1em">Carrer de Mallorca</text>
+                  <text x="210" y="72" font-family="var(--font-sans), sans-serif" font-size="7" fill="#8c8070" letter-spacing="0.1em">Carrer de Mallorca</text>
+                  
+                  <text x="30" y="172" font-family="var(--font-sans), sans-serif" font-size="7" fill="#8c8070" letter-spacing="0.1em">Carrer de Provença</text>
+                  <text x="210" y="172" font-family="var(--font-sans), sans-serif" font-size="7" fill="#8c8070" letter-spacing="0.1em">Carrer de Provença</text>
+
+                  <text x="72" y="120" font-family="var(--font-sans), sans-serif" font-size="7" fill="#8c8070" letter-spacing="0.1em" transform="rotate(-90 72 120)">Carrer de Balmes</text>
+                  <text x="172" y="120" font-family="var(--font-sans), sans-serif" font-size="7" fill="#8c8070" letter-spacing="0.1em" transform="rotate(-90 172 120)">Rambla de Catalunya</text>
+                  
+                  <!-- Marker Location (Intersection Balmes / Mallorca area) -->
+                  <circle cx="72" cy="120" r="14" fill="var(--accent-gold)" opacity="0.3">
+                    <animate attributeName="r" values="8;18;8" dur="2.5s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0.35;0;0.35" dur="2.5s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="72" cy="120" r="5" fill="var(--accent-gold)"/>
+                  
+                  <!-- Marker Pin vector -->
+                  <path d="M72 108c-3.8 0-7 3.2-7 7 0 4.6 7 11 7 11s7-6.4 7-11c0-3.8-3.2-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z" fill="var(--accent-gold)"/>
+                </svg>
+                
+                <!-- Overlay "Open in Google Maps" Button -->
+                <div class="map-overlay">
+                  <a href="https://maps.google.com/?q=Carrer+de+Balmes+124+Barcelona" target="_blank" class="btn btn-primary" data-i18n="btn_open_maps">Obrir a Google Maps</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Hours & Details -->
+        <div class="contact-layout-column">
+          <!-- Hours Card -->
+          <div class="contact-card-box">
+            <h3 class="contact-card-title" data-i18n="contact_label_hours">Horari</h3>
+            <div class="contact-card-content">
+              <ul class="contact-hours-list">
+                <li data-i18n="contact_hours_wk">Dilluns a Divendres: 10:00h - 20:00h</li>
+                <li data-i18n="contact_hours_sat">Dissabtes: 09:00h - 14:00h</li>
+                <li data-i18n="contact_hours_sun">Diumenges: Tancat</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Contact Details Card -->
+          <div class="contact-card-box" style="margin-top: 2rem;">
+            <h3 class="contact-card-title" data-i18n="nav_contact">Contacte</h3>
+            <div class="contact-card-content contact-details-list">
+              
+              <div class="contact-row">
+                <span class="contact-row-label" data-i18n="contact_label_phone">Telèfon</span>
+                <a href="tel:+34934567890" class="contact-row-value" data-i18n="contact_value_phone">+34 934 567 890</a>
+              </div>
+
+              <div class="contact-row">
+                <span class="contact-row-label" data-i18n="contact_label_email">Correu Electrònic</span>
+                <a href="mailto:info@albaboschhair.com" class="contact-row-value">info@albaboschhair.com</a>
+              </div>
+
+              <div class="contact-row">
+                <span class="contact-row-label">Instagram</span>
+                <a href="https://instagram.com/albabosch_hairstudio" target="_blank" class="contact-row-value instagram-link" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="vertical-align: middle;">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                  <span>@albabosch_hairstudio</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- --- FAQ SECTION ("PREGUNTES FREQÜENTS") --- -->
+  <section id="faq" class="section-padding" style="background: #FAF8F5; border-top: 1px solid var(--border-light);">
+    <div class="container" style="max-width: 1200px;">
+      <div class="section-header reveal-on-scroll">
+        <span class="section-subtitle">Atenció al client</span>
+        <h2 class="section-title">Preguntes Freqüents</h2>
+      </div>
+
+      <div class="faq-accordion-grid" id="faq-accordion-list">
+        <!-- Columna Esquerra -->
+        <div class="faq-accordion-column">
+          <!-- Item 1 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>Quins serveis oferiu?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Oferim serveis d'estilisme de luxe femenina: talls de precisió, coloració 100% orgànica lliure d'amoníac, balayage signature, metxes clàssiques i tractaments d'hidratació profunda i cèl·lules mare.</p>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>Com puc reservar una cita?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Pots reservar fàcilment online fent clic al botó "BOOK AN APPOINTMENT" a través del nostre assistent de reserva pas a pas, o bé trucant-nos directament al +34 934 567 890.</p>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>Puc cancel·lar o modificar una cita?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Sí, pots cancel·lar o modificar la teva cita sense cap cost fins a 24 hores abans del teu servei a través de l'enllaç de confirmació del teu correu o trucant al saló.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Dreta -->
+        <div class="faq-accordion-column">
+          <!-- Item 4 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>Quant dura cada servei?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>La durada varia segons el servei: un tall o pentinat requereix entre 45 i 60 minuts, mentre que una coloració o balayage complet sol durar entre 2 i 3 hores.</p>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>Quines formes de pagament accepteu?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Acceptem targetes de crèdit/dèbit (Visa, Mastercard, AMEX), efectiu, Bizum i pagament en línia segur mitjançant la nostra plataforma web.</p>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>On esteu ubicats?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Estem ubicats al centre de Barcelona, a Carrer de Balmes, 124 (entre Rosselló i Provença), en un espai exclusiu i silenciós dissenyat per al teu confort.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#home" class="footer-logo">
+            <span>ALBA BOSCH</span>
+            <span class="logo-studio">HAIR STUDIO</span>
+          </a>
+          <p class="footer-about" data-i18n="footer_about">
+            Saló de perruqueria femenina de gamma alta a Barcelona. Experiències de cura capil·lar personalitzada en un entorn de luxe silenciós.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title" data-i18n="footer_quick_links">Enllaços ràpids</h4>
+          <ul class="footer-links">
+            <li><a href="#home" data-i18n="nav_home">Inici</a></li>
+            <li><a href="#team" data-i18n="nav_team">L'equip</a></li>
+            <li><a href="#services" data-i18n="nav_services">Serveis</a></li>
+            <li><a href="#products" data-i18n="nav_products">Productes</a></li>
+            <li><a href="#before-after" data-i18n="nav_before_after">Abans & Després</a></li>
+            <li><a href="#contact" data-i18n="nav_contact">Contacte</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title" data-i18n="footer_hours">Horari d'Obertura</h4>
+          <ul class="footer-contact-list">
+            <li data-i18n="contact_hours_wk">Dilluns a Divendres: 10:00h - 20:00h</li>
+            <li data-i18n="contact_hours_sat">Dissabtes: 09:00h - 14:00h</li>
+            <li data-i18n="contact_hours_sun">Diumenges: Tancat</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Instagram</h4>
+          <ul class="footer-links">
+            <li><a href="https://instagram.com" target="_blank" rel="noopener">@albabosch.hairstudio</a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener">#albaboschsalon</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span data-i18n="footer_rights">© 2026 Alba Bosch Hair Studio. Tots els drets reservats.</span>
+        <div class="social-links">
+          <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- BOOKING MODAL (WIZARD FLOW) --- -->
+  <div class="modal-overlay">
+    <div class="modal-container">
+      <button class="modal-close" aria-label="Close modal">×</button>
+      <div class="modal-body">
+        
+        <div class="wizard-header">
+          <h2 class="wizard-title" id="wizard-step-title" data-i18n="modal_step1_title">Quin servei prefereixes?</h2>
+          
+          <div class="wizard-progress">
+            <div class="wizard-progress-bar active"></div>
+            <div class="wizard-progress-bar"></div>
+            <div class="wizard-progress-bar"></div>
+            <div class="wizard-progress-bar"></div>
+          </div>
+        </div>
+
+        <form id="wizard-form">
+          <!-- Step 1: Services -->
+          <div class="wizard-step active" data-step="1">
+            <div class="step-options-grid">
+              
+              <button type="button" class="option-card" data-service="cut">
+                <span class="option-card-subtitle">55€</span>
+                <h4 class="option-card-title" data-i18n="service_cut_name">Tall de cabell</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="cut_styling">
+                <span class="option-card-subtitle">75€</span>
+                <h4 class="option-card-title" data-i18n="service_cut_styling_name">Tall i pentinat</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="styling">
+                <span class="option-card-subtitle">45€</span>
+                <h4 class="option-card-title" data-i18n="service_styling_name">Pentinat Editorial</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="color">
+                <span class="option-card-subtitle">65€</span>
+                <h4 class="option-card-title" data-i18n="service_color_name">Coloració Orgànica</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="balayage">
+                <span class="option-card-subtitle">140€</span>
+                <h4 class="option-card-title" data-i18n="service_balayage_name">Balayage Signature</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="highlights">
+                <span class="option-card-subtitle">110€</span>
+                <h4 class="option-card-title" data-i18n="service_highlights_name">Metxes Clàssiques</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="hydration">
+                <span class="option-card-subtitle">90€</span>
+                <h4 class="option-card-title" data-i18n="service_hydration_name">Tractament de Cèl·lules Mare</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="detox">
+                <span class="option-card-subtitle">60€</span>
+                <h4 class="option-card-title" data-i18n="service_detox_name">Detox Capil·lar Ayurvèdic</h4>
+              </button>
+
+              <button type="button" class="option-card" data-service="repair">
+                <span class="option-card-subtitle">70€</span>
+                <h4 class="option-card-title" data-i18n="service_repair_name">Hidratació Profunda</h4>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Step 2: Stylists -->
+          <div class="wizard-step" data-step="2">
+            <div class="step-options-grid">
+              
+              <button type="button" class="option-card" data-stylist="alba">
+                <span class="option-card-subtitle" data-i18n="team_role_alba">Fundadora i Estilista Principal</span>
+                <h4 class="option-card-title">Alba Bosch</h4>
+              </button>
+
+              <button type="button" class="option-card" data-stylist="elena">
+                <span class="option-card-subtitle" data-i18n="team_role_elena">Especialista en Color</span>
+                <h4 class="option-card-title">Elena Muñoz</h4>
+              </button>
+
+              <button type="button" class="option-card" data-stylist="sofia">
+                <span class="option-card-subtitle" data-i18n="team_role_sofia">Tractaments i Tendències</span>
+                <h4 class="option-card-title">Sofia Gomez</h4>
+              </button>
+
+              <button type="button" class="option-card" data-stylist="any">
+                <span class="option-card-subtitle" data-i18n="form_professional_any">Qualsevol professional</span>
+                <h4 class="option-card-title" data-i18n="form_professional_any">Qualsevol professional</h4>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Step 3: Date & Time -->
+          <div class="wizard-step" data-step="3">
+            <div class="calendar-grid" id="calendar-days">
+              <!-- JS-generated dates -->
+            </div>
+
+            <div class="time-grid">
+              <button type="button" class="time-slot-btn" data-time="10:00">10:00</button>
+              <button type="button" class="time-slot-btn" data-time="11:30">11:30</button>
+              <button type="button" class="time-slot-btn" data-time="13:00">13:00</button>
+              <button type="button" class="time-slot-btn" data-time="14:30">14:30</button>
+              <button type="button" class="time-slot-btn" data-time="16:00">16:00</button>
+              <button type="button" class="time-slot-btn" data-time="17:30">17:30</button>
+              <button type="button" class="time-slot-btn" data-time="19:00">19:00</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Contact details -->
+          <div class="wizard-step" data-step="4">
+            <div class="form-grid single-column">
+              <div class="form-group">
+                <label class="form-label" for="booking-name" data-i18n="form_name">Nom Complet</label>
+                <input type="text" id="booking-name" class="form-input" required data-i18n-placeholder="form_name">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-email" data-i18n="form_email">Correu Electrònic</label>
+                <input type="email" id="booking-email" class="form-input" required data-i18n-placeholder="form_email">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-phone" data-i18n="form_phone">Telèfon de Contacte</label>
+                <input type="tel" id="booking-phone" class="form-input" required data-i18n-placeholder="form_phone">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-notes" data-i18n="form_notes">Notes especials o preferències</label>
+                <textarea id="booking-notes" class="form-textarea" data-i18n-placeholder="form_notes"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Success Summary Card -->
+          <div class="wizard-step" data-step="5">
+            <div class="success-card">
+              <div class="success-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="success-title" data-i18n="modal_step5_title">Cita Confirmada!</h3>
+              <p data-i18n="booking_success_msg">El teu espai de bellesa ha estat reservat. Rebràs un correu de confirmació en uns minuts.</p>
+              
+              <div class="success-details">
+                <div class="success-detail-item">
+                  <span data-i18n="summary_service">Servei:</span>
+                  <strong id="summary-service-val">Tall Alba Bosch</strong>
+                </div>
+                <div class="success-detail-item">
+                  <span data-i18n="summary_stylist">Estilista:</span>
+                  <strong id="summary-stylist-val">Alba Bosch</strong>
+                </div>
+                <div class="success-detail-item">
+                  <span data-i18n="summary_date">Data i Hora:</span>
+                  <strong id="summary-date-val">24 d'Agost @ 10:00</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="wizard-footer">
+          <button type="button" class="btn btn-outline" id="wizard-prev" data-i18n="btn_prev">Enrere</button>
+          <button type="button" class="btn btn-primary" id="wizard-next" data-i18n="btn_next">Següent</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- --- SHOPPING CART DRAWER --- -->
+  <div class="cart-backdrop"></div>
+  <div class="cart-drawer">
+    <div class="cart-header">
+      <h2 class="cart-drawer-title" data-i18n="cart_title">El teu carret</h2>
+      <button class="cart-close-btn" aria-label="Tancar">×</button>
+    </div>
+    <div class="cart-items-list" id="cart-items-container">
+      <!-- Dynamic list generated by JS -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-promo-section" style="margin-bottom: 1.5rem; border-bottom: 1px dotted var(--border-light); padding-bottom: 1.5rem;">
+        <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.5rem; display: block;" data-i18n="checkout_promo_label">Tens un codi promocional?</label>
+        <div class="promo-code-row" style="display: flex; gap: 0.5rem;">
+          <input type="text" id="cart-promo-input" class="form-input promo-input" style="padding: 0.6rem 1rem; font-size: 0.85rem;" data-i18n-placeholder="checkout_promo_placeholder">
+          <button type="button" class="btn btn-outline promo-btn" id="cart-promo-apply" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;" data-i18n="checkout_promo_apply">Aplicar</button>
+        </div>
+        <div class="promo-feedback" id="cart-promo-feedback" style="font-size: 0.75rem; margin-top: 0.4rem; min-height: 1rem;"></div>
+      </div>
+
+      <div class="cart-summary-line">
+        <span data-i18n="cart_subtotal">Subtotal</span>
+        <span id="cart-subtotal-val">0€</span>
+      </div>
+      <div class="cart-summary-line" id="cart-discount-row" style="display: none; color: #8fa382; font-weight: 500;">
+        <span data-i18n="checkout_discount">Descompte (10%)</span>
+        <span id="cart-discount-val">-0€</span>
+      </div>
+      <div class="cart-summary-line">
+        <span data-i18n="cart_shipping">Enviament</span>
+        <span id="cart-shipping-val">0€</span>
+      </div>
+      <div class="cart-summary-line total">
+        <span data-i18n="cart_total">Total</span>
+        <span id="cart-total-val">0€</span>
+      </div>
+      <button class="btn btn-primary" id="cart-checkout-btn" style="width: 100%; margin-top: 1.5rem;" data-i18n="btn_checkout">Finalitzar compra</button>
+    </div>
+  </div>
+
+  <!-- --- CHECKOUT OVERLAY (MODAL FLOW) --- -->
+  <div class="checkout-overlay">
+    <div class="checkout-container">
+      <div class="checkout-header">
+        <h2 class="checkout-title" data-i18n="checkout_title">Finalitzar compra</h2>
+        <button class="checkout-close" aria-label="Tancar">×</button>
+      </div>
+      <div class="checkout-body">
+        
+        <form id="checkout-form">
+          <div class="checkout-grid" id="checkout-main-grid">
+            
+            <!-- Left Side: Forms -->
+            <div class="checkout-form-section">
+              <div>
+                <h3 class="checkout-section-title" data-i18n="checkout_personal_title">Dades del client</h3>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="checkout-name" data-i18n="form_name">Nom Complet</label>
+                    <input type="text" id="checkout-name" class="form-input" required data-i18n-placeholder="form_name">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="checkout-email" data-i18n="form_email">Correu Electrònic</label>
+                    <input type="email" id="checkout-email" class="form-input" required data-i18n-placeholder="form_email">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="checkout-phone" data-i18n="form_phone">Telèfon de Contacte</label>
+                    <input type="tel" id="checkout-phone" class="form-input" required data-i18n-placeholder="form_phone">
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="checkout-section-title" data-i18n="checkout_shipping_title">Adreça d'enviament</h3>
+                <div class="form-grid">
+                  <div class="form-group full-width">
+                    <label class="form-label" for="checkout-address" data-i18n="checkout_address">Adreça</label>
+                    <input type="text" id="checkout-address" class="form-input" required data-i18n-placeholder="checkout_address">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="checkout-city" data-i18n="checkout_city">Ciutat</label>
+                    <input type="text" id="checkout-city" class="form-input" required data-i18n-placeholder="checkout_city">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="checkout-zip" data-i18n="checkout_zip">Codi Postal</label>
+                    <input type="text" id="checkout-zip" class="form-input" required data-i18n-placeholder="checkout_zip">
+                  </div>
+                  <div class="form-group full-width">
+                    <label class="form-label" for="checkout-country" data-i18n="checkout_country">País</label>
+                    <input type="text" id="checkout-country" class="form-input" required data-i18n-placeholder="checkout_country">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Order summary & Payment -->
+            <div class="order-summary-box">
+              <h3 class="checkout-section-title" data-i18n="checkout_summary_title">Resum de la comanda</h3>
+              
+              <div class="checkout-items-list" id="checkout-items-summary">
+                <!-- JS injected items summary -->
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem;">
+                <div class="checkout-summary-item">
+                  <span data-i18n="cart_subtotal">Subtotal</span>
+                  <span id="checkout-subtotal-val">0€</span>
+                </div>
+                <div class="checkout-summary-item">
+                  <span data-i18n="cart_shipping">Enviament</span>
+                  <span id="checkout-shipping-val">0€</span>
+                </div>
+                <div class="checkout-summary-item" id="checkout-discount-row" style="display: none; color: #8fa382; font-weight: 500;">
+                  <span data-i18n="checkout_discount">Descompte (10%)</span>
+                  <span id="checkout-discount-val">-0€</span>
+                </div>
+                <div class="checkout-summary-item" style="font-size: 1.2rem; font-weight: 600; border-top: 1px dotted var(--border-medium); padding-top: 0.8rem; margin-top: 0.5rem;">
+                  <span data-i18n="cart_total">Total</span>
+                  <span id="checkout-total-val">0€</span>
+                </div>
+              </div>
+
+              <!-- Promo Code Input -->
+              <div style="margin-bottom: 2.5rem;">
+                <label class="form-label" data-i18n="checkout_promo_label">Tens un codi promocional?</label>
+                <div class="promo-code-row">
+                  <input type="text" id="checkout-promo-input" class="form-input promo-input" data-i18n-placeholder="checkout_promo_placeholder">
+                  <button type="button" class="btn btn-outline promo-btn" id="checkout-promo-apply" data-i18n="checkout_promo_apply">Aplicar</button>
+                </div>
+                <div class="promo-feedback" id="checkout-promo-feedback"></div>
+              </div>
+
+              <!-- Payment Option -->
+              <div>
+                <h4 class="form-label" style="margin-bottom: 1rem;" data-i18n="checkout_payment_title">Mètode de pagament</h4>
+                <div class="payment-methods-grid">
+                  <button type="button" class="payment-option-card selected" data-payment="card" data-i18n="checkout_payment_card">Targeta</button>
+                  <button type="button" class="payment-option-card" data-payment="paypal">PayPal</button>
+                </div>
+
+                <div class="card-details-mock" id="card-details-fields">
+                  <div class="form-group">
+                    <label class="form-label" for="checkout-card-num" data-i18n="checkout_card_number">Número de targeta</label>
+                    <input type="text" id="checkout-card-num" class="form-input" placeholder="0000 0000 0000 0000">
+                  </div>
+                  <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                      <label class="form-label" for="checkout-card-exp" data-i18n="checkout_card_expiry">Caducitat</label>
+                      <input type="text" id="checkout-card-exp" class="form-input" placeholder="MM/AA">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                      <label class="form-label" for="checkout-card-cvc" data-i18n="checkout_card_cvc">CVC</label>
+                      <input type="text" id="checkout-card-cvc" class="form-input" placeholder="123">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2rem;" data-i18n="checkout_confirm_btn">Pagar i Finalitzar</button>
+            </div>
+
+          </div>
+          
+          <!-- Success view -->
+          <div class="checkout-success-view" id="checkout-success-container" style="display: none;">
+            <div class="checkout-success-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="map-title" data-i18n="checkout_success_title">Compra Confirmada!</h3>
+            <p data-i18n="checkout_success_msg" style="max-width: 420px; color: var(--text-muted);">La teva comanda ha estat processada correctament. Rebràs un correu de confirmació amb els detalls de l'enviament en breu.</p>
+            <button type="button" class="btn btn-primary" id="checkout-success-close" data-i18n="btn_close" style="margin-top: 1.5rem;">Tancar</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=55.0"></script>
+</body>
+</html>

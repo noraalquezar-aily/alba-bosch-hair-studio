@@ -1,0 +1,5416 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alba Bosch Hair Studio | Administració Interna</title>
+  <!-- Serif and Sans-serif premium fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap">
+  <!-- Chart.js for premium analytics visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-cream: #FCFAF6;
+      --bg-sand: #F3ECE1;
+      --bg-sand-dark: #EBE1D3;
+      --text-dark: #1E1A16;
+      --text-muted: #615A52;
+      --accent-gold: #C5A880;
+      --color-accent-caramel: #af8e63;
+      --border-light: rgba(30, 26, 22, 0.08);
+      --border-medium: rgba(30, 26, 22, 0.15);
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'DM Sans', sans-serif;
+      --status-confirmed: #e2f0d9;
+      --status-confirmed-txt: #385723;
+      --status-pending: #fff2cc;
+      --status-pending-txt: #7f6000;
+      --status-cancelled: #fce4d6;
+      --status-cancelled-txt: #c65911;
+      --status-completed: #e8f1f5;
+      --status-completed-txt: #1f4e79;
+      --status-noshow: #f2dbdb;
+      --status-noshow-txt: #a51d24;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- LOGIN OVERLAY --- */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      background-color: var(--bg-cream);
+    }
+
+    .login-card {
+      background: white;
+      border: 1px solid var(--border-light);
+      padding: 3rem 2.5rem;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 10px 40px rgba(30, 26, 22, 0.03);
+      text-align: center;
+    }
+
+    .logo-container {
+      font-family: var(--font-serif);
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-main {
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .logo-studio {
+      font-size: 0.7rem;
+      letter-spacing: 0.45em;
+      color: var(--color-accent-caramel);
+      text-transform: uppercase;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .login-title {
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid var(--border-medium);
+      border-radius: 30px;
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--color-accent-caramel);
+      background-color: white;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 30px;
+      background-color: var(--text-dark);
+      color: white;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-login:hover {
+      background-color: var(--color-accent-caramel);
+    }
+
+    .login-error {
+      color: var(--status-noshow-txt);
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    /* --- DASHBOARD LAYOUT --- */
+    .dashboard-container {
+      display: none; /* Shown after auth */
+      width: 100%;
+      zoom: 1.1;
+    }
+
+    header {
+      background-color: white;
+      border-bottom: 1px solid var(--border-light);
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-tab {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .nav-tab.active {
+      color: var(--text-dark);
+    }
+
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--color-accent-caramel);
+    }
+
+    .btn-logout {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 500;
+      margin-left: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border-light);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout .logout-icon {
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-muted);
+      transition: stroke 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      border-color: var(--status-cancelled-txt);
+      color: var(--status-cancelled-txt);
+      background-color: rgba(212, 157, 148, 0.05);
+    }
+
+    .btn-logout:hover .logout-icon {
+      stroke: var(--status-cancelled-txt);
+    }
+
+    main {
+      padding: 2rem 2.5rem;
+      max-width: 1480px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    /* --- FILTERS & CONTROLS --- */
+    .controls-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .filters-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border-medium);
+      border-radius: 20px;
+      background-color: white;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      color: var(--text-dark);
+    }
+
+    .filter-select:focus {
+      border-color: var(--color-accent-caramel);
+    }
+
+    .view-toggle {
+      display: flex;
+      background-color: var(--bg-sand);
+      border-radius: 30px;
+      padding: 3px;
+    }
+
+    .view-btn {
+      padding: 0.5rem 1.5rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: 30px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .view-btn.active {
+      background-color: white;
+      color: var(--text-dark);
+      box-shadow: 0 4px 10px rgba(30, 26, 22, 0.05);
+    }
+
+    .btn-create-booking {
+      padding: 0.75rem 1.8rem;
+      border-radius: 30px;
+      background-color: var(--color-accent-caramel);
+      border: none;
+      color: white;
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 15px rgba(175, 142, 99, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+    }
+
+    .btn-create-booking .btn-create-icon {
+      width: 16px;
+      height: 16px;
+      stroke: white;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-create-booking:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(175, 142, 99, 0.35);
+      filter: brightness(1.05);
+    }
+
+    .btn-create-booking:hover .btn-create-icon {
+      transform: rotate(90deg);
+    }
+
+    /* --- CALENDAR WIDGET --- */
+    .calendar-card {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(30, 26, 22, 0.01);
+    }
+
+    .calendar-header-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .calendar-nav-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .calendar-nav-btn:hover {
+      border-color: var(--color-accent-caramel);
+      color: var(--color-accent-caramel);
+    }
+
+    .btn-today {
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-dark);
+      transition: all 0.3s ease;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-today:hover {
+      border-color: var(--color-accent-caramel);
+      color: var(--color-accent-caramel);
+    }
+
+    /* Monthly View Grid */
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-top: 1px solid var(--border-light);
+      border-left: 1px solid var(--border-light);
+    }
+
+    .weekday-header {
+      background-color: var(--bg-cream);
+      padding: 0.8rem;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .day-cell {
+      min-height: 130px;
+      padding: 0.6rem;
+      background-color: white;
+      border-right: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .day-cell.other-month {
+      background-color: #faf9f6;
+    }
+
+    .day-number {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .day-cell.today .day-number {
+      color: white;
+      background-color: var(--color-accent-caramel);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    /* Weekly & Daily Views */
+    .week-day-col {
+      border-right: 1px solid var(--border-light);
+      min-height: 500px;
+      padding: 1rem;
+      background-color: white;
+      flex: 1;
+    }
+
+    .week-header {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      text-align: center;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--bg-sand);
+    }
+
+    .flex-week-container {
+      display: flex;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Booking Cards inside Cells */
+    .booking-card-item {
+      padding: 0.6rem 0.75rem;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid #EAEAEA;
+      background-color: #FFFFFF;
+      color: #1A1A1A;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      line-height: 1.3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      position: relative;
+    }
+
+    .booking-card-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+      border-color: #DCDCDC;
+    }
+
+    .booking-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    /* Circle Icons */
+    .status-circle-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .status-circle-icon svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* Status Badges Base styling */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+      font-size: 0.58rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    /* 1. CONFIRMED (Sage Green) */
+    .booking-card-item.status-confirmed {
+      border-left: 4px solid #558B6E;
+    }
+    .status-circle-icon.status-confirmed {
+      background-color: #558B6E;
+    }
+    .booking-card-item.status-confirmed .status-badge {
+      background-color: #E2ECE6;
+      color: #38634B;
+    }
+
+    /* 2. PENDING (Amber / Mustard) */
+    .booking-card-item.status-pending {
+      border-left: 4px solid #D99B26;
+    }
+    .status-circle-icon.status-pending {
+      background-color: #D99B26;
+    }
+    .booking-card-item.status-pending .status-badge {
+      background-color: #FBF2DF;
+      color: #8D6213;
+    }
+
+    /* 3. COMPLETED (Blue) */
+    .booking-card-item.status-completed {
+      border-left: 4px solid #4D7EA8;
+    }
+    .status-circle-icon.status-completed {
+      background-color: #4D7EA8;
+    }
+    .booking-card-item.status-completed .status-badge {
+      background-color: #E5EFF7;
+      color: #2F587A;
+    }
+
+    /* 4. CANCELLED (Coral / Terracotta) */
+    .booking-card-item.status-cancelled {
+      border-left: 4px solid #D86053;
+    }
+    .status-circle-icon.status-cancelled {
+      background-color: #D86053;
+    }
+    .booking-card-item.status-cancelled .status-badge {
+      background-color: #FCE8E6;
+      color: #9C3328;
+    }
+    .booking-card-item.status-cancelled .booking-card-title {
+      text-decoration: line-through;
+      color: #777777;
+    }
+
+    /* 5. NO-SHOW (Warm Taupe / Grey) */
+    .booking-card-item.status-noshow,
+    .booking-card-item.status-no-show {
+      border-left: 4px solid #9C938B;
+    }
+    .status-circle-icon.status-noshow,
+    .status-circle-icon.status-no-show {
+      background-color: #9C938B;
+    }
+    .booking-card-item.status-noshow .status-badge,
+    .booking-card-item.status-no-show .status-badge {
+      background-color: #EFECE9;
+      color: #5E5751;
+    }
+
+    /* Card Details typography */
+    .booking-card-time {
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: #111111;
+      margin-top: 1px;
+    }
+
+    .booking-card-title {
+      font-weight: 500;
+      font-size: 0.76rem;
+      color: #222222;
+    }
+
+    .booking-card-meta {
+      font-size: 0.7rem;
+      color: #666666;
+      font-weight: 400;
+    }
+
+    /* --- SCHEDULES MANAGER --- */
+    .schedule-panel {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 3rem;
+    }
+
+    .stylist-list-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .stylist-select-item {
+      padding: 1.2rem 1.5rem;
+      background-color: white;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .stylist-select-item.active {
+      border-color: var(--color-accent-caramel);
+      background-color: var(--bg-cream);
+      box-shadow: inset 0 0 10px rgba(175, 142, 99, 0.03);
+    }
+
+    .stylist-name-role h4 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .stylist-name-role p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .stylist-color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+    /* --- NEW SCHEDULES & ABSENCES SECTION STYLES --- */
+    .schedules-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.8rem;
+      background: #FFFFFF;
+      padding: 1.2rem 1.8rem;
+      border-radius: 12px;
+      border: 1px solid #EAEAEA;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .schedules-main-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 0.2rem;
+    }
+
+    .schedules-main-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .worker-select-box {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: #FDFCFB;
+      padding: 0.4rem 0.8rem 0.4rem 1rem;
+      border-radius: 30px;
+      border: 1px solid #E2DDD5;
+    }
+
+    .worker-select-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .worker-dropdown-select {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--color-accent-caramel);
+      cursor: pointer;
+      outline: none;
+      padding-right: 0.5rem;
+    }
+
+    .schedules-two-column-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 992px) {
+      .schedules-two-column-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .schedule-editor-card {
+      background: white;
+      border: 1px solid #EAEAEA;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(30, 26, 22, 0.015);
+    }
+
+    /* --- SCHEDULES SUMMARY BANNER & BIG ABSENCE CALENDAR LAYOUT --- */
+    .schedules-summary-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 12px;
+      padding: 1.1rem 1.6rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .summary-banner-info {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+    }
+
+    .summary-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .info-block-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    /* --- VACATION SUMMARY CARD STYLES --- */
+    .vacation-summary-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 14px;
+      padding: 1.2rem 1.6rem;
+      margin-bottom: 1.6rem;
+      box-shadow: 0 2px 10px rgba(30, 26, 22, 0.02);
+    }
+
+    .vacation-summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .vacation-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .vacation-title-group h4 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .vacation-icon {
+      width: 18px;
+      height: 18px;
+      stroke: var(--color-accent-caramel);
+    }
+
+    .vacation-worker-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-accent-caramel);
+      background: #F5EFEB;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+    }
+
+    .vacation-stats-grid {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .vacation-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .stat-number {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .stat-number.enjoyed {
+      color: #8C6111;
+    }
+
+    .stat-number.available {
+      color: #2E7D32;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    .vacation-progress-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .vacation-progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #EFECE6;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #D9B26E, #AF8E63);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-caption {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* CALENDAR ABSENCE MOTIF TEXT BADGE */
+    .mini-calendar-day-cell .absence-day-badge {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 95%;
+      padding: 1px 3px;
+      border-radius: 3px;
+    }
+
+    /* ABSENCE OVERLAP DISCRET BADGE (ELEGANT TAUPE / MARRÓ SUAU SENSE ALERTES) */
+    .mini-calendar-day-cell .overlap-badge {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.60rem;
+      font-weight: 500;
+      color: #8D847E;
+      background: transparent;
+      border: none;
+      padding: 0;
+      max-width: 95%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+    }
+
+    /* ABSENCE VIEW MODE SELECTOR (INDIVIDUAL / EQUIP TOGGLE) */
+    .absence-view-mode-selector {
+      display: inline-flex;
+      background: #F4F1EC;
+      padding: 3px;
+      border-radius: 20px;
+      border: 1px solid #E5E0D8;
+    }
+
+    .absence-view-mode-selector .mode-btn {
+      padding: 0.25rem 0.8rem;
+      border: none;
+      background: transparent;
+      border-radius: 16px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .absence-view-mode-selector .mode-btn.active {
+      background: #FFFFFF;
+      color: var(--color-accent-caramel);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* TEAM VIEW ABSENCE PILLS */
+    .team-absence-pill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    .team-absence-pill {
+      font-size: 0.60rem;
+      font-weight: 600;
+      padding: 1px 4px;
+      border-radius: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .team-absence-pill.vacances {
+      background: #FDF7EC;
+      color: #8C6111;
+      border: 1px solid #E8CF9E;
+    }
+    .team-absence-pill.maternitat {
+      background: #FDF0F5;
+      color: #AD1457;
+      border: 1px solid #F48FB1;
+    }
+    .team-absence-pill.baixa {
+      background: #EBF7FD;
+      color: #0277BD;
+      border: 1px solid #81D4FA;
+    }
+    .team-absence-pill.bloquejat {
+      background: #F3F1EF;
+      color: #4E4640;
+      border: 1px solid #BCAAA4;
+    }
+    .team-absence-pill.altres {
+      background: #F6EFF9;
+      color: #6A1B9A;
+      border: 1px solid #CE93D8;
+    }
+
+    .info-block-value {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .summary-info-divider {
+      width: 1px;
+      height: 28px;
+      background: #E5E5E5;
+    }
+
+    .btn-open-schedule-modal {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.3rem;
+      background: #FDFCFB;
+      border: 1px solid #DCD7CD;
+      border-radius: 30px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--color-accent-caramel);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-open-schedule-modal:hover {
+      background: #F5EFEB;
+      border-color: var(--color-accent-caramel);
+      transform: translateY(-1px);
+    }
+
+    .absence-main-container {
+      width: 100%;
+    }
+
+    .absence-main-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(30, 26, 22, 0.015);
+    }
+
+    .absence-grid-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 1.8rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 992px) {
+      .absence-grid-layout {
+        grid-template-columns: 1fr;
+      }
+      .summary-info-divider {
+        display: none;
+      }
+    }
+
+    .absence-calendar-big-wrapper {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+
+    .mini-calendar-grid.big-grid .mini-calendar-day-cell {
+      min-height: 54px;
+      font-size: 0.85rem;
+    }
+
+    .absence-side-management {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .card-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #F0F0F0;
+    }
+
+    .section-header-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-header-title h3 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .header-icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--color-accent-caramel);
+    }
+
+    .active-worker-badge {
+      background: #F5EFEB;
+      color: var(--color-accent-caramel);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    /* Schedule Days Table Rows */
+    .schedule-days-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .schedule-day-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0.9rem;
+      background: #FAFAFA;
+      border: 1px solid #EEEEEE;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .schedule-day-item.is-closed {
+      background: #F5F5F5;
+      opacity: 0.75;
+      border-color: #E5E5E5;
+    }
+
+    .day-name-box {
+      width: 100px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+    }
+
+    .time-inputs-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* FIX DEFINITIU PER ALS INPUTS DE TEMPS: Amplada de 115px sense cap tall */
+    .time-input-field {
+      width: 115px !important;
+      min-width: 115px !important;
+      padding: 0.45rem 0.6rem !important;
+      border: 1px solid #DCDCDC;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.88rem !important;
+      font-weight: 600;
+      outline: none;
+      background-color: #FFFFFF;
+      color: #111111;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .time-input-field:disabled {
+      background-color: #EBEBEB;
+      color: #888888;
+      cursor: not-allowed;
+      border-color: #E0E0E0;
+    }
+
+    .time-separator {
+      font-size: 0.8rem;
+      color: #888888;
+      font-weight: 500;
+    }
+
+    .day-status-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .day-status-toggle input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--color-accent-caramel);
+      cursor: pointer;
+    }
+
+    .save-schedule-footer {
+      margin-top: 1.8rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-save-schedule-main {
+      padding: 0.85rem 2.2rem;
+      border-radius: 30px;
+      background-color: var(--color-accent-caramel);
+      border: none;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(175, 142, 99, 0.25);
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-save-schedule-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(175, 142, 99, 0.4);
+      filter: brightness(1.05);
+    }
+
+    /* MINI ABSENCE CALENDAR */
+    .absence-calendar-container {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .mini-calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .mini-calendar-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .mini-calendar-nav {
+      background: white;
+      border: 1px solid #E0DDD7;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .mini-calendar-nav:hover {
+      border-color: var(--color-accent-caramel);
+      color: var(--color-accent-caramel);
+    }
+
+    .mini-calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+    }
+
+    .mini-calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+
+    .mini-calendar-day-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 500;
+      border-radius: 6px;
+      background: white;
+      border: 1px solid #EFEFEF;
+      color: var(--text-dark);
+      position: relative;
+      cursor: default;
+    }
+
+    .mini-calendar-day-cell.other-month {
+      opacity: 0.35;
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .mini-calendar-day-cell.today {
+      font-weight: 800;
+      border-color: var(--color-accent-caramel);
+    }
+
+    /* Absence Color Indicators on Calendar Days */
+    .mini-calendar-day-cell.has-absence {
+      font-weight: 700;
+    }
+    .mini-calendar-day-cell.absence-vacances {
+      background-color: #FDF7EC;
+      border-color: #E8CF9E;
+      color: #8C6111;
+    }
+    .mini-calendar-day-cell.absence-maternitat {
+      background-color: #FDF0F5;
+      border-color: #F48FB1;
+      color: #AD1457;
+    }
+    .mini-calendar-day-cell.absence-baixa {
+      background-color: #EBF7FD;
+      border-color: #81D4FA;
+      color: #0277BD;
+    }
+    .mini-calendar-day-cell.absence-bloquejat {
+      background-color: #F3F1EF;
+      border-color: #BCAAA4;
+      color: #4E4640;
+    }
+    .mini-calendar-day-cell.absence-altres {
+      background-color: #F6EFF9;
+      border-color: #CE93D8;
+      color: #6A1B9A;
+    }
+
+    /* ==========================================================================
+       SECTION: ANALYTICS DASHBOARD STYLES
+       ========================================================================== */
+    .analytics-container {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 2rem 2.5rem;
+      box-sizing: border-box;
+    }
+
+    .analytics-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.4rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .analytics-main-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .analytics-main-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .period-select-box {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #FFFFFF;
+      border: 1px solid #E5E0D8;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .period-select-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .period-dropdown-select {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-accent-caramel);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* CUSTOM DATE PICKER POPUP */
+    .custom-date-picker-box {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #FFFFFF;
+      border: 1px solid #E5E0D8;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      margin-top: 0.5rem;
+    }
+
+    .custom-date-input {
+      border: 1px solid #E5E0D8;
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-family: inherit;
+      font-size: 0.76rem;
+      color: var(--text-dark);
+      outline: none;
+    }
+
+    .btn-apply-custom-date {
+      background: var(--color-accent-caramel);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-apply-custom-date:hover {
+      opacity: 0.9;
+    }
+
+    /* ANALYTICS SUBNAV BAR */
+    .analytics-subnav-bar {
+      display: flex;
+      gap: 0.4rem;
+      border-bottom: 1px solid #EAEAEA;
+      margin-bottom: 1.8rem;
+      padding-bottom: 0.1rem;
+      overflow-x: auto;
+    }
+
+    .analytics-subnav-item {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .analytics-subnav-item:hover {
+      color: var(--text-dark);
+    }
+
+    .analytics-subnav-item.active {
+      color: var(--color-accent-caramel);
+      border-bottom-color: var(--color-accent-caramel);
+      font-weight: 700;
+    }
+
+    /* KPI CARDS GRID (4 COLUMNS) */
+    .analytics-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 1000px) {
+      .analytics-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .analytics-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .kpi-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 14px;
+      padding: 1.3rem 1.4rem;
+      box-shadow: 0 2px 12px rgba(30, 26, 22, 0.02);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .kpi-card-editorial {
+      background: #FFFFFF;
+      border: 1px solid #EAE6E1;
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+      box-shadow: 0 4px 18px rgba(30, 26, 22, 0.015);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-card-editorial:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30, 26, 22, 0.04);
+    }
+
+    .kpi-number-hero {
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+
+    .kpi-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .kpi-percentage-badge {
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .summary-period-tag {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      background: #FAF7F2;
+      border: 1px solid #EAE6E1;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #8D847E;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(30, 26, 22, 0.04);
+    }
+
+    .kpi-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .kpi-value {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.4rem;
+      line-height: 1;
+    }
+
+    .kpi-trend {
+      font-size: 0.74rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .kpi-trend.positive {
+      color: #2E7D32;
+    }
+
+    .kpi-trend.neutral {
+      color: #8D847E;
+    }
+
+    /* CHARTS & CARDS LAYOUT */
+    .analytics-grid-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .analytics-grid-two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .analytics-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 16px;
+      padding: 1.6rem 1.8rem;
+      box-shadow: 0 4px 20px rgba(30, 26, 22, 0.015);
+    }
+
+    .card-header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .analytics-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .analytics-card-subtitle {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .chart-toggle-btn-group {
+      display: inline-flex;
+      background: #F4F1EC;
+      padding: 2px;
+      border-radius: 20px;
+      border: 1px solid #E5E0D8;
+    }
+
+    .chart-toggle-btn {
+      padding: 0.2rem 0.7rem;
+      border: none;
+      background: transparent;
+      border-radius: 16px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chart-toggle-btn.active {
+      background: #FFFFFF;
+      color: var(--color-accent-caramel);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    /* RANKING LISTS */
+    .ranking-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .ranking-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: #FAF9F8;
+      border: 1px solid #EAE6E1;
+      border-radius: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .ranking-item:hover {
+      background: #F5EFEB;
+    }
+
+    .ranking-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .ranking-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #EAE3D9;
+      color: var(--color-accent-caramel);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ranking-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .ranking-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .ranking-right {
+      text-align: right;
+    }
+
+    .ranking-revenue {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .ranking-units {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-accent-caramel);
+    }
+
+    /* HIGHLIGHT OPPORTUNITY BOX */
+    .opportunity-card-highlight {
+      background: linear-gradient(135deg, #FDFBF7, #F5EFEB);
+      border: 1px solid #E8DFD3;
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .opportunity-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #FAF0E4;
+      border: 1px solid #E4D3BE;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-accent-caramel);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .opportunity-content h5 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.15rem;
+    }
+
+    .opportunity-content p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* SEARCH TABLE STYLES */
+    .search-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    .search-table th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      border-bottom: 1px solid #EAEAEA;
+    }
+
+    .search-table td {
+      padding: 0.7rem 0.8rem;
+      border-bottom: 1px solid #F4F4F4;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .zero-results-badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: #FFF3E0;
+      color: #E65100;
+      border: 1px solid #FFE0B2;
+    }
+
+    /* HEATMAP STYLES */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: 80px repeat(7, 1fr);
+      gap: 4px;
+      margin-top: 1rem;
+    }
+
+    .heatmap-header-cell {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 0.3rem;
+    }
+
+    .heatmap-time-cell {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .heatmap-data-cell {
+      height: 34px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      transition: transform 0.15s ease;
+    }
+
+    .heatmap-data-cell:hover {
+      transform: scale(1.05);
+    }
+
+    .heat-lvl-0 { background: #FAF9F8; color: #BBB; }
+    .heat-lvl-1 { background: #F7F1E7; color: #8C6A3B; }
+    .heat-lvl-2 { background: #EBD9BF; color: #6E5025; }
+    .heat-lvl-3 { background: #D6B991; color: #4E3614; }
+    .heat-lvl-4 { background: #AF8E63; color: #FFFFFF; }
+
+    /* INSIGHTS SECTION - HIGH VISUAL & COLORFUL EDITORIAL CARDS */
+    .insights-card-container {
+      background: linear-gradient(135deg, #FAF7F2 0%, #FFFFFF 100%);
+      border: 1px solid #E5DFD5;
+      border-radius: 16px;
+      padding: 1.6rem 1.8rem;
+      box-shadow: 0 4px 20px rgba(30, 26, 22, 0.03);
+      margin-bottom: 2rem;
+    }
+
+    .insights-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .insights-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .insight-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.1rem 1.3rem;
+      background: #FFFFFF;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .insight-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    .insight-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.6rem;
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+    }
+
+    .insight-badge-green {
+      background: rgba(46, 125, 50, 0.1);
+      color: #2E7D32;
+    }
+
+    .insight-badge-caramel {
+      background: rgba(175, 142, 99, 0.12);
+      color: #8C6A3B;
+    }
+
+    .insight-badge-taupe {
+      background: rgba(141, 132, 126, 0.12);
+      color: #615A52;
+    }
+
+    .insight-badge-red {
+      background: rgba(198, 73, 73, 0.1);
+      color: #C64949;
+    }
+
+    .insight-text {
+      font-size: 0.82rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-dark);
+    }
+
+    .insight-text strong {
+      color: var(--color-accent-caramel);
+    }
+
+    /* Absence Legend Bar */
+    .absence-legend-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.8rem;
+      margin-bottom: 1.4rem;
+      padding: 0.6rem 0.8rem;
+      background: #FAFAFA;
+      border-radius: 8px;
+      border: 1px solid #EEEEEE;
+    }
+
+    .legend-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .legend-chip.vacances .legend-dot { background: #D9B26E; }
+    .legend-chip.maternitat .legend-dot { background: #E91E63; }
+    .legend-chip.baixa .legend-dot { background: #03A9F4; }
+    .legend-chip.bloquejat .legend-dot { background: #8D847E; }
+    .legend-chip.altres .legend-dot { background: #AB47BC; }
+
+    /* Add Absence Form */
+    .add-absence-form-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .absence-form-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .absence-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      .absence-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .absence-form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .absence-form-label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .absence-form-select,
+    .absence-form-input {
+      width: 100%;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid #DCDCDC;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      outline: none;
+      background: #FFFFFF;
+      box-sizing: border-box;
+    }
+
+    .btn-add-absence {
+      width: 100%;
+      padding: 0.55rem;
+      border-radius: 6px;
+      background: var(--text-dark);
+      color: white;
+      border: none;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-add-absence:hover {
+      background: var(--color-accent-caramel);
+    }
+
+    /* Recorded Absences List */
+    .absence-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .absence-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.55rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      border: 1px solid #EEEEEE;
+      background: white;
+    }
+
+    .absence-list-item.vacances { border-left: 4px solid #D9B26E; }
+    .absence-list-item.maternitat { border-left: 4px solid #E91E63; }
+    .absence-list-item.baixa { border-left: 4px solid #03A9F4; }
+    .absence-list-item.bloquejat { border-left: 4px solid #8D847E; }
+    .absence-list-item.altres { border-left: 4px solid #AB47BC; }
+
+    .absence-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .absence-item-dates {
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .absence-item-desc {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .btn-delete-absence {
+      background: transparent;
+      border: none;
+      color: #C62828;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .btn-delete-absence:hover {
+      background: #FFEBEE;
+    }
+
+    .block-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr auto;
+      gap: 1rem;
+      align-items: flex-end;
+      background: var(--bg-cream);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .blocks-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .blocks-table th, .blocks-table td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .blocks-table th {
+      background-color: var(--bg-cream);
+      font-weight: 600;
+    }
+
+    .btn-delete-block {
+      color: var(--status-noshow-txt);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* --- MODALS --- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(30, 26, 22, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 580px;
+      box-shadow: 0 15px 50px rgba(30, 26, 22, 0.1);
+      transform: translateY(30px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close-btn:hover {
+      border-color: var(--color-accent-caramel);
+      color: var(--color-accent-caramel);
+    }
+
+    .modal-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .modal-form-grid .span-2 {
+      grid-column: span 2;
+    }
+
+    .modal-footer-btns {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .btn-secondary {
+      padding: 0.8rem 1.8rem;
+      border-radius: 30px;
+      border: 1px solid var(--border-medium);
+      color: var(--text-dark);
+      background-color: transparent;
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-dark);
+    }
+
+    .btn-danger {
+      padding: 0.8rem 1.8rem;
+      border-radius: 30px;
+      color: white;
+      background-color: var(--status-noshow-txt);
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+      background-color: #8b1318;
+    }
+
+    .btn-primary-modal {
+      padding: 0.8rem 2rem;
+      border-radius: 30px;
+      color: white;
+      background-color: var(--text-dark);
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary-modal:hover {
+      background-color: var(--color-accent-caramel);
+    }
+
+    /* --- RESPONSIVE MEDIA QUERIES --- */
+    @media (max-width: 991px) {
+      header {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      .header-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+      .btn-logout {
+        margin-left: 0;
+      }
+      main {
+        padding: 1.5rem;
+      }
+      .controls-strip {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .filters-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .view-toggle {
+        justify-content: center;
+      }
+      .btn-create-booking {
+        text-align: center;
+      }
+      .schedule-panel {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .block-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .desktop-only-spacer {
+        display: none;
+      }
+      .calendar-header-title {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+      }
+      .day-cell {
+        min-height: 90px;
+        padding: 0.3rem;
+      }
+      .booking-card-item {
+        padding: 0.3rem;
+        font-size: 0.65rem;
+      }
+      .booking-card-meta {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- 1. LOGIN SCREEN --- -->
+  <div id="login-screen" class="login-container" style="display: none !important;">
+    <div class="login-card">
+      <div class="logo-container">
+        <span class="logo-main">ALBA BOSCH</span>
+        <span class="logo-studio">HAIR STUDIO</span>
+      </div>
+      <h2 class="login-title">Accés Treballadors</h2>
+      
+      <form id="login-form" onsubmit="doDirectLogin(event); return false;">
+        <div class="form-group">
+          <label class="form-label" for="username">Usuari</label>
+          <input type="text" id="username" class="form-input" autocomplete="username" value="admin">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="password">Contrasenya</label>
+          <input type="password" id="password" class="form-input" autocomplete="current-password" value="admin123">
+        </div>
+        
+        <div id="login-error" class="login-error">Credencials incorrectes</div>
+        
+        <button type="button" class="btn-login" onclick="doDirectLogin(event)">Iniciar Sessió</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- 2. STAFF DASHBOARD --- -->
+  <div id="dashboard" class="dashboard-container" style="display: block !important;">
+    <header>
+      <div class="logo-container" style="margin-bottom: 0;">
+        <span class="logo-main" style="font-size: 1.2rem;">ALBA BOSCH</span>
+        <span class="logo-studio" style="font-size: 0.55rem;">HAIR STUDIO</span>
+      </div>
+      <div class="header-nav">
+        <div class="nav-tab active" onclick="switchTab('calendar', event)">Calendari de Cites</div>
+        <div class="nav-tab" onclick="switchTab('schedules', event)">DISPONIBILITAT DEL PERSONAL</div>
+        <div class="nav-tab" onclick="switchTab('analytics', event)">ANALÍTICA</div>
+        <button class="btn-logout" onclick="handleLogout()">
+          <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Tancar sessió</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- --- PANEL: CALENDAR --- -->
+    <div id="tab-calendar" class="tab-panel">
+      <main>
+        <div class="controls-strip">
+          <div class="filters-group">
+            <select id="filter-stylist" class="filter-select" onchange="loadBookings()">
+              <option value="all">Tots els professionals</option>
+              <option value="alba">Alba Bosch</option>
+              <option value="elena">Elena Muñoz</option>
+              <option value="sofia">Sofia Gomez</option>
+              <option value="lucia">Lucia Vidal</option>
+              <option value="marina">Marina Silva</option>
+              <option value="clara">Clara Pons</option>
+            </select>
+            
+            <select id="filter-service" class="filter-select" onchange="loadBookings()">
+              <option value="all">Tots els serveis</option>
+              <option value="cut">Tall de cabell</option>
+              <option value="cut_style">Tall i pentinat</option>
+              <option value="styling">Pentinat Editorial</option>
+              <option value="color">Coloració Orgànica</option>
+              <option value="balayage">Balayage Signature</option>
+              <option value="highlights">Metxes Clàssiques</option>
+              <option value="hydration">Tractament de Cèl·lules Mare</option>
+              <option value="detox">Detox Capil·lar Ayurvèdic</option>
+              <option value="repair">Hidratació Profunda</option>
+            </select>
+          </div>
+          
+          <div class="view-toggle">
+            <div class="view-btn active" id="btn-view-month" onclick="setViewMode('month')">Mes</div>
+            <div class="view-btn" id="btn-view-week" onclick="setViewMode('week')">Setmana</div>
+            <div class="view-btn" id="btn-view-day" onclick="setViewMode('day')">Dia</div>
+          </div>
+          
+          <button class="btn-create-booking" onclick="openCreateModal()">
+            <svg class="btn-create-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+              <line x1="12" y1="14" x2="12" y2="20"></line>
+              <line x1="9" y1="17" x2="15" y2="17"></line>
+            </svg>
+            <span>Nova reserva</span>
+          </button>
+        </div>
+
+        <div class="calendar-card">
+          <div class="calendar-header-title">
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <div class="calendar-nav-btn" onclick="navigateCalendar(-1)">&larr;</div>
+              <button class="btn-today" onclick="resetToToday()">Avui</button>
+              <div class="calendar-nav-btn" onclick="navigateCalendar(1)">&rarr;</div>
+            </div>
+            <span id="calendar-current-period">Setembre 2026</span>
+            <div style="width: 120px;" class="desktop-only-spacer"></div>
+          </div>
+
+          <div id="calendar-grid-body">
+            <!-- Dynamic calendar cells loaded here -->
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- --- PANEL: SCHEDULES & ABSENCES --- -->
+    <div id="tab-schedules" class="tab-panel" style="display: none;">
+      <main style="max-width: 1480px; margin: 0 auto; padding: 2rem 2.5rem; box-sizing: border-box;">
+        
+        <!-- Header Bar amb Títol i Selector de Treballador/a -->
+        <div class="schedules-header-bar">
+          <div>
+            <h2 class="schedules-main-title">Disponibilitat del personal</h2>
+            <p class="schedules-main-subtitle">Gestió de calendaris, vacances i baixes de l'equip</p>
+          </div>
+          <div class="worker-select-box">
+            <label for="schedule-worker-select" class="worker-select-label">Treballador/a:</label>
+            <select id="schedule-worker-select" class="worker-dropdown-select" onchange="onWorkerSelectChange(this.value)">
+              <!-- Carregat dinàmicament -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Targeta Resum de Vacances Anuals -->
+        <div class="vacation-summary-card">
+          <div class="vacation-summary-header">
+            <div class="vacation-title-group">
+              <svg class="vacation-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <h4>Balanç de vacances · 2026</h4>
+            </div>
+            <span class="vacation-worker-tag" id="vacation-worker-name">Alba Bosch</span>
+          </div>
+          
+          <div class="vacation-stats-grid">
+            <div class="vacation-stat-item">
+              <span class="stat-number" id="vacation-assigned-count">23</span>
+              <span class="stat-label">Dies assignats</span>
+            </div>
+            <div class="vacation-stat-item">
+              <span class="stat-number enjoyed" id="vacation-enjoyed-count">8</span>
+              <span class="stat-label">Dies gaudits</span>
+            </div>
+            <div class="vacation-stat-item">
+              <span class="stat-number available" id="vacation-available-count">15</span>
+              <span class="stat-label">Dies disponibles</span>
+            </div>
+          </div>
+
+          <div class="vacation-progress-wrapper">
+            <div class="vacation-progress-bar">
+              <div class="progress-fill" id="vacation-progress-fill" style="width: 34.7%;"></div>
+            </div>
+            <span class="progress-caption" id="vacation-progress-text">8 utilitzats · 15 disponibles</span>
+          </div>
+        </div>
+
+        <!-- BLOC PROTAGONISTA: Absències i disponibilitat -->
+        <div class="absence-main-container">
+          <div class="absence-main-card">
+            
+            <div class="card-section-header" style="margin-bottom: 1rem;">
+              <div class="section-header-title">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <h3>Absències i disponibilitat</h3>
+              </div>
+              <span class="active-worker-badge" id="current-editor-stylist-badge">Alba Bosch</span>
+            </div>
+
+            <!-- Llegenda d'absències superior -->
+            <div class="absence-legend-bar">
+              <div class="legend-chip vacances"><span class="legend-dot"></span> 🏖 Vacances</div>
+              <div class="legend-chip maternitat"><span class="legend-dot"></span> 🤰 Baixa de maternitat</div>
+              <div class="legend-chip baixa"><span class="legend-dot"></span> 🩺 Baixa mèdica</div>
+              <div class="legend-chip bloquejat"><span class="legend-dot"></span> 🔒 Bloqueig / No disponible</div>
+              <div class="legend-chip altres"><span class="legend-dot"></span> 📝 Altres absències</div>
+            </div>
+
+            <!-- Grid de 2 seccions: Esquerra el Calendari Gran | Dreta els Formularis i Llista -->
+            <div class="absence-grid-layout">
+              
+              <!-- Calendari Gran -->
+              <div class="absence-calendar-big-wrapper">
+                <div class="mini-calendar-header">
+                  <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <button type="button" class="mini-calendar-nav" onclick="prevAbsenceMonth()">&lsaquo;</button>
+                    <span id="absence-month-title" class="mini-calendar-title">Setembre 2026</span>
+                    <button type="button" class="mini-calendar-nav" onclick="nextAbsenceMonth()">&rsaquo;</button>
+                  </div>
+                </div>
+                <div class="mini-calendar-weekdays">
+                  <span>Dl</span><span>Dt</span><span>Dc</span><span>Dj</span><span>Dv</span><span>Ds</span><span>Dg</span>
+                </div>
+                <div id="mini-calendar-grid" class="mini-calendar-grid big-grid">
+                  <!-- Dynamic month grid days -->
+                </div>
+              </div>
+
+              <!-- Panell Lateral de Gestió d'Absències -->
+              <div class="absence-side-management">
+                <!-- Formulari per Afegir Absència -->
+                <div class="add-absence-form-card">
+                  <h4 class="absence-form-title">+ Nova absència o bloqueig</h4>
+                  <form id="absence-form" onsubmit="saveAbsence(event)">
+                    <div class="absence-form-grid">
+                      <div class="absence-form-group full-width">
+                        <label class="absence-form-label">Tipus d'absència</label>
+                        <select id="absence-type" class="absence-form-select" required>
+                          <option value="vacances">🏖 Vacances</option>
+                          <option value="maternitat">🤰 Baixa de maternitat</option>
+                          <option value="baixa">🩺 Baixa mèdica</option>
+                          <option value="bloquejat">🔒 Bloqueig / no disponible</option>
+                          <option value="altres">📝 Altres absències</option>
+                        </select>
+                      </div>
+                      <div class="absence-form-group">
+                        <label class="absence-form-label">Data Inici</label>
+                        <input type="date" id="absence-start-date" class="absence-form-input" required>
+                      </div>
+                      <div class="absence-form-group">
+                        <label class="absence-form-label">Data Fi</label>
+                        <input type="date" id="absence-end-date" class="absence-form-input" required>
+                      </div>
+                      <div class="absence-form-group full-width">
+                        <label class="absence-form-label">Motiu / Observacions</label>
+                        <input type="text" id="absence-desc" class="absence-form-input" placeholder="Ex: Vacances d'estiu o formació">
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn-add-absence">REGISTRAR ABSÈNCIA</button>
+                  </form>
+                </div>
+
+                <!-- Llista d'absències enregistrades de la treballadora -->
+                <div class="recorded-absences-wrapper">
+                  <h4 class="absence-form-title" style="margin-bottom: 0.8rem;">Absències enregistrades</h4>
+                  <div id="absence-list-container" class="absence-items-list">
+                    <!-- Dynamic list items -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- --- PANEL: ANALYTICS --- -->
+    <div id="tab-analytics" class="tab-panel" style="display: none;">
+      <main class="analytics-container">
+        
+        <!-- Header Bar amb Títol i Selector de Període + Comparació -->
+        <div class="analytics-header-bar">
+          <div>
+            <h2 class="analytics-main-title">Analítica</h2>
+            <p class="analytics-main-subtitle">Coneix millor el teu negoci a través de les dades</p>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center;">
+              <!-- Filtre 1 — Període -->
+              <div class="period-select-box">
+                <label for="analytics-period-select" class="period-select-label">Període:</label>
+                <select id="analytics-period-select" class="period-dropdown-select" onchange="onAnalyticsPeriodChange(this.value)">
+                  <option value="today">Avui</option>
+                  <option value="last7">Aquesta setmana</option>
+                  <option value="last30">Últims 30 dies</option>
+                  <option value="month" selected>Aquest mes</option>
+                  <option value="prevmonth">Mes anterior</option>
+                  <option value="quarter">Últims 3 mesos</option>
+                  <option value="last6m">Últims 6 mesos</option>
+                  <option value="year">Aquest any</option>
+                  <option value="prevyear">Any anterior</option>
+                  <option value="last2y">Últims 2 anys</option>
+                  <option value="last3y">Últims 3 anys</option>
+                  <option value="custom">Personalitzat</option>
+                </select>
+              </div>
+
+              <!-- Filtre 2 — Comparar amb (opcional, per defecte No comparar) -->
+              <div class="period-select-box">
+                <label for="analytics-compare-select" class="period-select-label">Comparar amb:</label>
+                <select id="analytics-compare-select" class="period-dropdown-select" onchange="onAnalyticsCompareChange(this.value)">
+                  <option value="none" selected>No comparar</option>
+                  <option value="prev_month">Mes anterior</option>
+                  <option value="prev_quarter">Trimestre anterior</option>
+                  <option value="prev_year">Any anterior</option>
+                  <option value="custom">Personalitzat...</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Selector personalitzat de dates (Popup) -->
+            <div id="custom-date-picker-container" class="custom-date-picker-box" style="display: none;">
+              <span style="font-size:0.74rem; color:var(--text-muted); font-weight:600;">Inici:</span>
+              <input type="date" id="custom-start-date" class="custom-date-input">
+              <span style="font-size:0.74rem; color:var(--text-muted); font-weight:600;">Fi:</span>
+              <input type="date" id="custom-end-date" class="custom-date-input">
+              <button type="button" class="btn-apply-custom-date" onclick="applyCustomDateRange()">APLICAR</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BARRA DE SUBNAVEGACIÓ D'ANALÍTICA (5 TABS) -->
+        <div class="analytics-subnav-bar">
+          <div class="analytics-subnav-item active" onclick="switchAnalyticsSubtab('summary', event)">Resum</div>
+          <div class="analytics-subnav-item" onclick="switchAnalyticsSubtab('bookings', event)">Reserves</div>
+          <div class="analytics-subnav-item" onclick="switchAnalyticsSubtab('sales', event)">Vendes</div>
+          <div class="analytics-subnav-item" onclick="switchAnalyticsSubtab('clients', event)">Clients</div>
+          <div class="analytics-subnav-item" onclick="switchAnalyticsSubtab('web', event)">Web</div>
+        </div>
+
+        <!-- ===================================================================
+             SUBTAB 1: RESUM (PÀGINA PRINCIPAL D'ANALÍTICA)
+             =================================================================== -->
+        <div id="subtab-summary" class="analytics-subtab-panel" style="display: block;">
+          
+          <!-- CAPÇALERA EDITORIAL DEL RESUM -->
+          <div class="summary-editorial-header" style="margin-bottom: 1.8rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(30, 26, 22, 0.06); padding-bottom: 1.2rem;">
+            <div>
+              <div class="summary-period-tag" id="summary-period-badge" style="margin-bottom: 0.6rem;">Aquest mes</div>
+              <h2 style="font-family: var(--font-serif); font-size: 1.7rem; font-weight: 500; color: var(--text-dark); margin: 0 0 0.25rem 0;">Resum</h2>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0;">Una visió general de l'activitat del negoci durant el període seleccionat.</p>
+            </div>
+          </div>
+
+          <!-- 4 BLOCS EDITORIALS AMB PROTAGONISME AL NÚMERO (SENSE GRÀFIQUES) -->
+          <div class="analytics-kpi-grid" style="margin-bottom: 2.5rem;">
+            
+            <div class="kpi-card-editorial">
+              <div class="kpi-number-hero" id="kpi-summary-bookings">248</div>
+              <div class="kpi-label">Reserves</div>
+              <div class="kpi-percentage-badge" id="kpi-summary-bookings-trend"></div>
+            </div>
+
+            <div class="kpi-card-editorial">
+              <div class="kpi-number-hero" id="kpi-summary-revenue">8.420 €</div>
+              <div class="kpi-label">Ingressos</div>
+              <div class="kpi-percentage-badge" id="kpi-summary-revenue-trend"></div>
+            </div>
+
+            <div class="kpi-card-editorial">
+              <div class="kpi-number-hero" id="kpi-summary-products">137</div>
+              <div class="kpi-label">Productes venuts</div>
+              <div class="kpi-percentage-badge" id="kpi-summary-products-trend"></div>
+            </div>
+
+            <div class="kpi-card-editorial">
+              <div class="kpi-number-hero" id="kpi-summary-clients">186</div>
+              <div class="kpi-label">Clients</div>
+              <div class="kpi-percentage-badge" id="kpi-summary-clients-trend"></div>
+            </div>
+
+          </div>
+
+          <!-- INSIGHTS DE NEGOCI EDITORIALS DEL PERÍODE -->
+          <div class="insights-card-container">
+            <div style="margin-bottom: 1.4rem;">
+              <h3 class="analytics-card-title" style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 500;">Insights del període</h3>
+              <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.2rem;">Observacions intel·ligents de l'activitat i funcionament del negoci.</p>
+            </div>
+            
+            <div class="insights-list" id="summary-insights-list">
+              <!-- Renderitzat dinàmicament segons les dades del període i comparació -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SUBTAB 2: RESERVES (SIMPLIFICAT)
+             =================================================================== -->
+        <div id="subtab-bookings" class="analytics-subtab-panel" style="display: none;">
+          
+          <!-- BLOC A: EVOLUCIÓ DE LES RESERVES -->
+          <div class="analytics-card" style="margin-bottom: 1.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:1rem; flex-wrap:wrap; gap:0.8rem;">
+              <div style="display:flex; align-items:baseline; gap:0.8rem; flex-wrap:wrap;">
+                <span style="font-size:2.2rem; font-family:var(--font-sans); font-weight:700; color:var(--text-dark); letter-spacing:-0.02em; font-variant-numeric: lining-nums tabular-nums;" id="bookings-tab-total">248 reserves</span>
+                <span style="font-size:0.92rem; font-weight:700; color:#2E7D32;" id="bookings-tab-comparison">↑ 12,4%</span>
+              </div>
+            </div>
+            <div style="height: 220px; position: relative;">
+              <canvas id="chart-bookings-detail-line"></canvas>
+            </div>
+          </div>
+
+          <div class="analytics-grid-two-col">
+            <!-- BLOC B: SERVEIS MÉS RESERVATS -->
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Serveis més reservats</h3>
+              </div>
+              <div class="ranking-list" id="bookings-services-ranking-list">
+                <!-- Renderitzat dinàmicament -->
+              </div>
+            </div>
+
+            <!-- BLOC C: ESTAT DE LES RESERVES -->
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Estat de les reserves</h3>
+              </div>
+              
+              <!-- ESTAT DE LES RESERVES (SOPORT PER A 1 O 2 CERCLOS DE COSTAT) -->
+              <div id="bookings-status-donuts-wrapper" style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: start; padding-top: 0.5rem;">
+                <!-- Cercle 1: Període actual -->
+                <div id="status-donut-box-current" style="text-align: center;">
+                  <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem;" id="status-donut-title-current">Període actual</div>
+                  <div style="font-size: 1.3rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.3rem;" id="status-donut-total-current">248 reserves</div>
+                  <div style="height: 180px; position: relative; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                    <canvas id="chart-bookings-status-donut"></canvas>
+                    <div id="status-donut-center-current" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; width: 110px; transition: all 0.2s ease;">
+                      <div id="status-donut-center-label-current" style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">TOTAL</div>
+                      <div id="status-donut-center-val-current" style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); line-height: 1.1; margin: 2px 0;">248</div>
+                      <div id="status-donut-center-sub-current" style="font-size: 0.72rem; font-weight: 600; color: var(--text-muted);">reserves</div>
+                    </div>
+                  </div>
+                  <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.6rem;" id="status-text-summary-current">
+                    <span id="summary-cur-0" style="color:#2E7D32; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">192 completades</span> · 
+                    <span id="summary-cur-1" style="color:#C67D33; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">32 pendents</span> · 
+                    <span id="summary-cur-2" style="color:#C64949; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">18 cancel·lades</span> · 
+                    <span id="summary-cur-3" style="color:#9E2B2B; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">6 no presentades</span>
+                  </div>
+                </div>
+
+                <!-- Cercle 2: Període comparat (amagat si No comparar) -->
+                <div id="status-donut-box-compare" style="text-align: center; display: none; opacity: 0.88; border-left: 1px solid #EAE6E1; padding-left: 1rem;">
+                  <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem;" id="status-donut-title-compare">Període comparat</div>
+                  <div style="font-size: 1.3rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.3rem;" id="status-donut-total-compare">210 reserves</div>
+                  <div style="height: 180px; position: relative; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                    <canvas id="chart-bookings-status-donut-compare"></canvas>
+                    <div id="status-donut-center-compare" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; width: 110px; transition: all 0.2s ease;">
+                      <div id="status-donut-center-label-compare" style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">TOTAL</div>
+                      <div id="status-donut-center-val-compare" style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); line-height: 1.1; margin: 2px 0;">210</div>
+                      <div id="status-donut-center-sub-compare" style="font-size: 0.72rem; font-weight: 600; color: var(--text-muted);">reserves</div>
+                    </div>
+                  </div>
+                  <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.6rem;" id="status-text-summary-compare">
+                    <span id="summary-comp-0" style="color:#81C784; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">165 completades</span> · 
+                    <span id="summary-comp-1" style="color:#FFB74D; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">28 pendents</span> · 
+                    <span id="summary-comp-2" style="color:#E57373; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">12 cancel·lades</span> · 
+                    <span id="summary-comp-3" style="color:#E53935; font-weight:700; padding:2px 6px; border-radius:4px; transition:all 0.2s ease; display:inline-block;">5 no presentades</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SUBTAB 3: VENDES (FACTURACIÓ I PRODUCTES MÉS VENUTS)
+             =================================================================== -->
+        <div id="subtab-sales" class="analytics-subtab-panel" style="display: none;">
+          <div class="analytics-grid-two-col">
+            <!-- EVOLUCIÓ DE LES VENDES -->
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Evolució de les vendes</h3>
+              </div>
+              <div style="height: 240px; position: relative;">
+                <canvas id="chart-sales-revenue-line"></canvas>
+              </div>
+            </div>
+
+            <!-- PRODUCTES MÉS VENUTS -->
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Productes més venuts</h3>
+              </div>
+              <div class="ranking-list" id="sales-products-ranking-list">
+                <!-- Renderitzat dinàmicament -->
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-card">
+            <div class="card-header-flex">
+              <h3 class="analytics-card-title">Facturació per línia de negoci</h3>
+            </div>
+            <div style="height: 240px; position: relative;">
+              <canvas id="chart-sales-breakdown-bar"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SUBTAB 4: CLIENTS (COMPLET I ELEGANT)
+             =================================================================== -->
+        <div id="subtab-clients" class="analytics-subtab-panel" style="display: none;">
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:1rem; margin-bottom:1.5rem; padding:1.2rem; background:#FFFFFF; border:1px solid #EAEAEA; border-radius:14px;">
+            <div>
+              <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Clients nous</span>
+              <div style="font-size:1.4rem; font-weight:700; color:var(--text-dark);" id="clients-tab-new">82 clients</div>
+              <div style="font-size:0.75rem; color:#2E7D32; font-weight:700; margin-top:0.1rem;" id="clients-tab-new-trend"></div>
+            </div>
+            <div style="border-left:1px solid #E5E0D8; padding-left:1rem;">
+              <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Clients recurrents</span>
+              <div style="font-size:1.4rem; font-weight:700; color:var(--text-dark);" id="clients-tab-recurring">104 clients</div>
+              <div style="font-size:0.75rem; color:#2E7D32; font-weight:700; margin-top:0.1rem;" id="clients-tab-recurring-trend"></div>
+            </div>
+            <div style="border-left:1px solid #E5E0D8; padding-left:1rem;">
+              <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Taxa de recurrència</span>
+              <div style="font-size:1.4rem; font-weight:700; color:var(--color-accent-caramel);" id="clients-tab-rate">55,9%</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; margin-top:0.1rem;">55,9% del total de clients</div>
+            </div>
+            <div style="border-left:1px solid #E5E0D8; padding-left:1rem;">
+              <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Base activa</span>
+              <div style="font-size:1.4rem; font-weight:700; color:#AF8E63;">1.250</div>
+              <div style="font-size:0.75rem; color:#2E7D32; font-weight:700; margin-top:0.1rem;" id="clients-tab-growth-trend"></div>
+            </div>
+          </div>
+
+          <div class="analytics-grid-two-col">
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Nombre de visites i freqüència</h3>
+              </div>
+              <div style="height: 230px; position: relative; margin-top: 0.5rem;">
+                <canvas id="chart-clients-frequency-bar"></canvas>
+              </div>
+            </div>
+
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Evolució del nombre de clients</h3>
+              </div>
+              <div style="height: 230px; position: relative;">
+                <canvas id="chart-clients-growth-line"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SUBTAB 5: WEB
+             =================================================================== -->
+        <div id="subtab-web" class="analytics-subtab-panel" style="display: none;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem; padding:1.2rem; background:#FFFFFF; border:1px solid #EAEAEA; border-radius:14px;">
+            <div>
+              <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Visites totals</span>
+              <div style="font-size:1.5rem; font-weight:700; color:var(--text-dark);">3.420</div>
+            </div>
+            <div style="border-left:1px solid #E5E0D8; padding-left:1.5rem;">
+              <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Visitants únics</span>
+              <div style="font-size:1.5rem; font-weight:700; color:var(--text-dark);">2.180</div>
+            </div>
+            <div style="border-left:1px solid #E5E0D8; padding-left:1.5rem;">
+              <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Nous vs Recurrents</span>
+              <div style="font-size:1.5rem; font-weight:700; color:var(--color-accent-caramel);">66,5% / 33,5%</div>
+            </div>
+          </div>
+
+          <div class="analytics-grid-two-col">
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Evolució del trànsit</h3>
+                <span class="analytics-card-subtitle">Visites a la web al llarg del temps</span>
+              </div>
+              <div style="height: 220px; position: relative;">
+                <canvas id="chart-web-traffic-line"></canvas>
+              </div>
+            </div>
+
+            <div class="analytics-card">
+              <div class="card-header-flex">
+                <h3 class="analytics-card-title">Pàgines més visitades</h3>
+                <span class="analytics-card-subtitle">Seccions més consultades del web</span>
+              </div>
+              <div class="ranking-list" id="web-pages-ranking-list">
+                <!-- Renderitzat dinàmicament -->
+              </div>
+            </div>
+          </div>
+
+          <!-- CERCADOR DE LA WEB -->
+          <div class="analytics-card" style="margin-top: 1.5rem;">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="analytics-card-title">Cercador de la web</h3>
+                <span class="analytics-card-subtitle">Què busquen exactament els usuaris?</span>
+              </div>
+            </div>
+
+            <div class="opportunity-card-highlight" style="margin-top: 0; margin-bottom: 1.2rem; background: #FFFDF8; border-color: #F5E1AD;">
+              <div class="opportunity-icon-box" style="background: #FFF9EB; color: #D98200; border-color: #F5E1AD;">💡</div>
+              <div class="opportunity-content">
+                <h5 style="color: #9E6100;">Oportunitat Comercial Detectada</h5>
+                <p>La cerca <strong>“xampú sense sulfats”</strong> acumula <strong>47 cerques amb 0 resultats</strong>. Aquest interès directe indica una clara oportunitat de negoci per incorporar el producte al catàleg.</p>
+              </div>
+            </div>
+
+            <table class="search-table">
+              <thead>
+                <tr>
+                  <th>Cerca</th>
+                  <th>Nº Cerques</th>
+                  <th>Resultats</th>
+                  <th>Estat / Oportunitat</th>
+                </tr>
+              </thead>
+              <tbody id="web-search-table-body">
+                <!-- Renderitzat dinàmicament -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- MODAL PER EDITAR L'HORARI HABITUAL -->
+    <div id="edit-schedule-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-card" style="max-width: 580px;">
+        <div class="modal-header">
+          <h3>Editar horari habitual</h3>
+          <span class="close-modal" onclick="closeScheduleModal()">&times;</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+          Personalitza els dies i hores de feina per a <strong id="modal-worker-name" style="color:var(--text-dark);">Alba Bosch</strong>.
+        </p>
+
+        <form id="schedule-form" onsubmit="saveSchedule(event)">
+          <div id="schedule-days-container" class="schedule-days-list">
+            <!-- Dynamic schedule fields for 7 days -->
+          </div>
+          
+          <div class="modal-footer" style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.8rem;">
+            <button type="button" class="btn-cancel" onclick="closeScheduleModal()">Cancel·lar</button>
+            <button type="submit" class="btn-save-schedule-main">DESAR CANVIS D'HORARI</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- 3. MODAL: EDIT / DETAIL APPOINTMENT --- -->
+  <div class="modal-overlay" id="edit-booking-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span id="modal-booking-title">Detalls de la Cita</span>
+        <div class="modal-close-btn" onclick="closeModal('edit-booking-modal')">&times;</div>
+      </div>
+      
+      <form id="edit-booking-form" onsubmit="saveBookingChanges(event)">
+        <input type="hidden" id="edit-booking-id">
+        
+        <div class="modal-form-grid">
+          <div class="form-group">
+            <label class="form-label">Nom del Client</label>
+            <input type="text" id="edit-client-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telèfon</label>
+            <input type="tel" id="edit-client-phone" class="form-input" required>
+          </div>
+          <div class="form-group span-2">
+            <label class="form-label">Email</label>
+            <input type="email" id="edit-client-email" class="form-input" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Servei</label>
+            <select id="edit-service" class="filter-select" style="width: 100%;" required>
+              <option value="cut">Tall de cabell</option>
+              <option value="cut_style">Tall i pentinat</option>
+              <option value="styling">Pentinat Editorial</option>
+              <option value="color">Coloració Orgànica</option>
+              <option value="balayage">Balayage Signature</option>
+              <option value="highlights">Metxes Clàssiques</option>
+              <option value="hydration">Tractament de Cèl·lules Mare</option>
+              <option value="detox">Detox Capil·lar Ayurvèdic</option>
+              <option value="repair">Hidratació Profunda</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Professional</label>
+            <select id="edit-stylist" class="filter-select" style="width: 100%;" required>
+              <option value="alba">Alba Bosch</option>
+              <option value="elena">Elena Muñoz</option>
+              <option value="sofia">Sofia Gomez</option>
+              <option value="lucia">Lucia Vidal</option>
+              <option value="marina">Marina Silva</option>
+              <option value="clara">Clara Pons</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Data</label>
+            <input type="date" id="edit-date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Hora</label>
+            <input type="time" id="edit-time" class="form-input" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Estat de la Cita</label>
+            <select id="edit-status" class="filter-select" style="width: 100%;" required>
+              <option value="confirmed">Confirmada</option>
+              <option value="pending">Pendent</option>
+              <option value="cancelled">Cancel·lada</option>
+              <option value="completed">Completada</option>
+              <option value="no-show">No presentada</option>
+            </select>
+          </div>
+          
+          <div class="form-group span-2">
+            <label class="form-label">Notes de la reserva</label>
+            <textarea id="edit-notes" class="form-input" style="height: 70px; resize: none; border-radius: 12px; padding: 0.6rem 1rem;"></textarea>
+          </div>
+        </div>
+        
+        <div class="modal-footer-btns">
+          <button type="button" class="btn-danger" id="btn-delete-booking" onclick="deleteBooking()">Eliminar / Cancel·lar Cita</button>
+          <button type="button" class="btn-secondary" onclick="closeModal('edit-booking-modal')">Tancar</button>
+          <button type="submit" class="btn-primary-modal">Desar Canvis</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- JAVASCRIPT LOGIC --- -->
+  <script>
+    let currentTab = 'calendar';
+    let viewMode = 'month'; // 'month', 'week', 'day'
+    let currentDate = new Date();
+    let workers = [];
+    let bookings = [];
+    let activeStylistIdForSchedule = 'alba';
+
+    function initApp() {
+      const loginScreen = document.getElementById("login-screen");
+      const dashboard = document.getElementById("dashboard");
+      
+      if (loginScreen) loginScreen.style.display = "none";
+      if (dashboard) dashboard.style.display = "block";
+      
+      loadWorkersData().then(() => {
+        loadBookings();
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initApp);
+    } else {
+      initApp();
+    }
+
+    function checkSession() {
+      initApp();
+    }
+
+    function doDirectLogin(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      
+      const username = usernameInput ? usernameInput.value : 'admin';
+      const password = passwordInput ? passwordInput.value : 'admin123';
+      
+      // Amagar immediatament la pantalla de login i carregar el taulell
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      
+      loadWorkersData().then(() => {
+        loadBookings();
+      });
+      
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username || 'admin', password: password || 'admin123' })
+      }).catch(err => console.log("Login bg status", err));
+      
+      return false;
+    }
+
+    function handleLogout() {
+      fetch('/api/logout', { method: 'POST' })
+        .then(() => {
+          checkSession();
+        });
+    }
+
+    function loadWorkersData() {
+      return fetch('/api/admin/workers')
+        .then(res => {
+          if (!res.ok) throw new Error("API not available");
+          return res.json();
+        })
+        .then(data => {
+          if (data.success) {
+            workers = data.workers;
+            initSchedulesTab();
+          }
+        })
+        .catch(err => {
+          console.warn("Using offline / fallback workers:", err);
+          workers = [
+            {"id": "alba", "name": "Alba Bosch", "role": "Fundadora i Estilista Principal", "color_accent": "#c5a880", "schedule": []},
+            {"id": "elena", "name": "Elena Muñoz", "role": "Especialista en Color", "color_accent": "#b38d6d", "schedule": []},
+            {"id": "sofia", "name": "Sofia Gomez", "role": "Tractaments i Tendències", "color_accent": "#9e816a", "schedule": []},
+            {"id": "lucia", "name": "Lucia Vidal", "role": "Estilista Sènior", "color_accent": "#a89078", "schedule": []},
+            {"id": "marina", "name": "Marina Silva", "role": "Canvis de Look", "color_accent": "#8a715b", "schedule": []},
+            {"id": "clara", "name": "Clara Pons", "role": "Terapeuta Capil·lar", "color_accent": "#d9c2a6", "schedule": []}
+          ];
+          initSchedulesTab();
+        });
+    }
+
+    function loadBookings() {
+      const stylist = document.getElementById("filter-stylist").value;
+      const service = document.getElementById("filter-service").value;
+      
+      let url = `/api/admin/bookings?stylist=${stylist}&service=${service}`;
+      
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error("API not available");
+          return res.json();
+        })
+        .then(data => {
+          if (data.success) {
+            bookings = data.bookings;
+            renderCalendar();
+          }
+        })
+        .catch(err => {
+          console.warn("Using local bookings fallback:", err);
+          const saved = JSON.parse(localStorage.getItem('albabosch_bookings') || '[]');
+          bookings = saved.map(b => ({
+            id: b.id || Math.floor(Math.random()*1000),
+            client_name: b.name || 'Client',
+            client_phone: b.phone || '',
+            service_id: b.service || 'cut',
+            worker_id: b.stylist || 'alba',
+            date: b.date,
+            time: b.time,
+            duration: 45,
+            status: b.status || 'confirmed'
+          }));
+          renderCalendar();
+        });
+    }
+
+    function loadBlockedTimes() {
+      fetch('/api/admin/blocked_times')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            renderBlockedTimesTable(data.blocked_times);
+          }
+        });
+    }
+
+    function switchTab(tab, e) {
+      currentTab = tab;
+      const tabs = document.querySelectorAll(".nav-tab");
+      tabs.forEach(t => t.classList.remove("active"));
+      
+      let target = null;
+      if (e && e.currentTarget) target = e.currentTarget;
+      else if (e && e.target) target = e.target;
+      
+      if (target) {
+        target.classList.add("active");
+      } else {
+        if (tab === 'calendar' && tabs[0]) tabs[0].classList.add("active");
+        if (tab === 'schedules' && tabs[1]) tabs[1].classList.add("active");
+        if (tab === 'analytics' && tabs[2]) tabs[2].classList.add("active");
+        if (tab === 'faq-manager' && tabs[3]) tabs[3].classList.add("active");
+      }
+      
+      const tabCal = document.getElementById("tab-calendar");
+      const tabSch = document.getElementById("tab-schedules");
+      const tabAna = document.getElementById("tab-analytics");
+      const tabFaq = document.getElementById("tab-faq-manager");
+      
+      if (tabCal) tabCal.style.display = tab === 'calendar' ? 'block' : 'none';
+      if (tabSch) tabSch.style.display = tab === 'schedules' ? 'block' : 'none';
+      if (tabAna) tabAna.style.display = tab === 'analytics' ? 'block' : 'none';
+      if (tabFaq) tabFaq.style.display = tab === 'faq-manager' ? 'block' : 'none';
+      
+      if (tab === 'schedules') {
+        initSchedulesTab();
+      } else if (tab === 'calendar') {
+        renderCalendar();
+      } else if (tab === 'analytics') {
+        initAnalyticsTab();
+      } else if (tab === 'faq-manager') {
+        loadFaqAdminTable();
+      }
+    }
+
+    function setViewMode(mode) {
+      viewMode = mode;
+      document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById(`btn-view-${mode}`).classList.add("active");
+      renderCalendar();
+    }
+
+    function navigateCalendar(dir) {
+      if (viewMode === 'month') {
+        currentDate.setMonth(currentDate.getMonth() + dir);
+      } else if (viewMode === 'week') {
+        currentDate.setDate(currentDate.getDate() + (dir * 7));
+      } else if (viewMode === 'day') {
+        currentDate.setDate(currentDate.getDate() + dir);
+      }
+      renderCalendar();
+    }
+
+    function resetToToday() {
+      currentDate = new Date();
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const periodLabel = document.getElementById("calendar-current-period");
+      const gridBody = document.getElementById("calendar-grid-body");
+      if (!gridBody) return;
+      gridBody.innerHTML = "";
+      
+      if (viewMode === 'month') {
+        // Month title
+        const options = { month: 'long', year: 'numeric' };
+        if (periodLabel) periodLabel.textContent = currentDate.toLocaleDateString('ca-ES', options).toUpperCase();
+        
+        // Build Month Grid HTML
+        const grid = document.createElement("div");
+        grid.className = "month-grid";
+        
+        // Weekdays header (Monday to Sunday)
+        const daysOfWeek = ['Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte', 'Diumenge'];
+        daysOfWeek.forEach(d => {
+          const wh = document.createElement("div");
+          wh.className = "weekday-header";
+          wh.textContent = d.substring(0,3);
+          grid.appendChild(wh);
+        });
+        
+        // Month days math
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        let firstDayIndex = new Date(year, month, 1).getDay() - 1;
+        if (firstDayIndex === -1) firstDayIndex = 6; // Diumenge
+        
+        const totalDays = new Date(year, month + 1, 0).getDate();
+        const prevTotalDays = new Date(year, month, 0).getDate();
+        
+        // Prev month overlap
+        for (let i = firstDayIndex - 1; i >= 0; i--) {
+          const cell = createDayCell(year, month - 1, prevTotalDays - i, true);
+          grid.appendChild(cell);
+        }
+        
+        // Current month days
+        const today = new Date();
+        for (let i = 1; i <= totalDays; i++) {
+          const isToday = today.getDate() === i && today.getMonth() === month && today.getFullYear() === year;
+          const cell = createDayCell(year, month, i, false, isToday);
+          grid.appendChild(cell);
+        }
+        
+        // Next month overlap (complete grid to 42 cells)
+        const totalGridCells = firstDayIndex + totalDays;
+        const nextOverlap = 42 - totalGridCells;
+        for (let i = 1; i <= nextOverlap; i++) {
+          const cell = createDayCell(year, month + 1, i, true);
+          grid.appendChild(cell);
+        }
+        
+        gridBody.appendChild(grid);
+        
+      } else if (viewMode === 'week') {
+        // Find Monday of the current date week
+        const currentDay = currentDate.getDay();
+        const offset = currentDay === 0 ? -6 : 1 - currentDay; // Adjust if Sunday
+        const monday = new Date(currentDate);
+        monday.setDate(currentDate.getDate() + offset);
+        
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+        
+        periodLabel.textContent = `${monday.getDate()} ${monday.toLocaleDateString('ca-ES', {month: 'short'})} - ${sunday.getDate()} ${sunday.toLocaleDateString('ca-ES', {month: 'short', year: 'numeric'})}`.toUpperCase();
+        
+        const flexContainer = document.createElement("div");
+        flexContainer.className = "flex-week-container";
+        
+        // Render 7 columns (Mon-Sun)
+        for (let i = 0; i < 7; i++) {
+          const date = new Date(monday);
+          date.setDate(monday.getDate() + i);
+          
+          const col = document.createElement("div");
+          col.className = "week-day-col";
+          
+          const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+          
+          const dayName = date.toLocaleDateString('ca-ES', { weekday: 'short', day: 'numeric' });
+          col.innerHTML = `<div class="week-header">${dayName}</div>`;
+          
+          // Bookings for this day
+          const dayBookings = bookings.filter(b => b.date === formattedDate);
+          dayBookings.forEach(booking => {
+            const card = createBookingCard(booking);
+            col.appendChild(card);
+          });
+          
+          flexContainer.appendChild(col);
+        }
+        
+        gridBody.appendChild(flexContainer);
+        
+      } else if (viewMode === 'day') {
+        periodLabel.textContent = currentDate.toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+        
+        const col = document.createElement("div");
+        col.className = "week-day-col";
+        col.style.maxWidth = "600px";
+        col.style.margin = "0 auto";
+        col.style.border = "1px solid var(--border-light)";
+        col.style.borderRadius = "8px";
+        
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+        
+        const dayBookings = bookings.filter(b => b.date === formattedDate);
+        if (dayBookings.length === 0) {
+          col.innerHTML = '<div style="text-align:center; padding: 3rem; color: var(--text-muted);">No hi ha cites per a avui.</div>';
+        } else {
+          dayBookings.forEach(booking => {
+            const card = createBookingCard(booking);
+            col.appendChild(card);
+          });
+        }
+        
+        gridBody.appendChild(col);
+      }
+    }
+
+    function createDayCell(year, month, day, isOtherMonth, isToday) {
+      // Correct year and month rollover
+      const tempDate = new Date(year, month, day);
+      const cellYear = tempDate.getFullYear();
+      const cellMonth = tempDate.getMonth() + 1;
+      const cellDay = tempDate.getDate();
+      
+      const formattedDate = `${cellYear}-${String(cellMonth).padStart(2, '0')}-${String(cellDay).padStart(2, '0')}`;
+      
+      const cell = document.createElement("div");
+      cell.className = `day-cell ${isOtherMonth ? 'other-month' : ''} ${isToday ? 'today' : ''}`;
+      cell.innerHTML = `<span class="day-number">${cellDay}</span>`;
+      
+      // Inject bookings for this day
+      const dayBookings = bookings.filter(b => b.date === formattedDate);
+      dayBookings.forEach(booking => {
+        const card = createBookingCard(booking);
+        cell.appendChild(card);
+      });
+      
+      return cell;
+    }
+
+    function createBookingCard(booking) {
+      const card = document.createElement("div");
+      card.className = `booking-card-item status-${booking.status}`;
+      
+      // Select status icon (white stroke inside colored circle)
+      let statusIcon = '';
+      switch(booking.status) {
+        case 'confirmed':
+          statusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+          break;
+        case 'pending':
+          statusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 15 15"></polyline></svg>`;
+          break;
+        case 'completed':
+          statusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
+          break;
+        case 'cancelled':
+          statusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+          break;
+        case 'noshow':
+        case 'no-show':
+          statusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><line x1="7" y1="12" x2="17" y2="12"></line></svg>`;
+          break;
+      }
+      
+      card.innerHTML = `
+        <div class="booking-card-top">
+          <div class="status-circle-icon status-${booking.status}">
+            ${statusIcon}
+          </div>
+          <span class="status-badge status-${booking.status}">${getTranslatedStatus(booking.status)}</span>
+        </div>
+        <span class="booking-card-time">${booking.time} (${booking.duration}m)</span>
+        <span class="booking-card-title">${booking.client_name}</span>
+        <span class="booking-card-meta">${getTranslatedServiceName(booking.service_id)} – ${booking.worker_name}</span>
+      `;
+      
+      card.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openEditModal(booking);
+      });
+      
+      return card;
+    }
+
+    function getTranslatedServiceName(key) {
+      switch (key) {
+        case "cut": return "Tall";
+        case "cut_style": return "Tall i Pent.";
+        case "styling": return "Pentinat";
+        case "color": return "Coloració";
+        case "balayage": return "Balayage";
+        case "highlights": return "Metxes";
+        case "hydration": return "Tract. Cèl.";
+        case "detox": return "Detox Cap.";
+        case "repair": return "Hidratació";
+        default: return key;
+      }
+    }
+
+    function getTranslatedStatus(status) {
+      switch (status) {
+        case "confirmed": return "Confirmada";
+        case "pending": return "Pendent";
+        case "completed": return "Completada";
+        case "cancelled": return "Cancel·lada";
+        case "noshow":
+        case "no-show": return "No presentat";
+        default: return status;
+      }
+    }
+
+    // --- MODALS ACTIONS ---
+    function openEditModal(booking) {
+      document.getElementById("modal-booking-title").textContent = "Editar Cita";
+      document.getElementById("edit-booking-id").value = booking.id;
+      document.getElementById("edit-client-name").value = booking.client_name;
+      document.getElementById("edit-client-phone").value = booking.client_phone;
+      document.getElementById("edit-client-email").value = booking.client_email;
+      document.getElementById("edit-service").value = booking.service_id;
+      document.getElementById("edit-stylist").value = booking.worker_id;
+      document.getElementById("edit-date").value = booking.date;
+      document.getElementById("edit-time").value = booking.time;
+      document.getElementById("edit-status").value = booking.status;
+      document.getElementById("edit-notes").value = booking.notes || "";
+      
+      document.getElementById("btn-delete-booking").style.display = "block";
+      document.getElementById("edit-booking-modal").classList.add("active");
+    }
+
+    function openCreateModal() {
+      document.getElementById("modal-booking-title").textContent = "Nova Cita Manual";
+      document.getElementById("edit-booking-id").value = "";
+      document.getElementById("edit-client-name").value = "";
+      document.getElementById("edit-client-phone").value = "";
+      document.getElementById("edit-client-email").value = "";
+      document.getElementById("edit-service").value = "cut";
+      document.getElementById("edit-stylist").value = "alba";
+      
+      // Auto-set tomorrow date and 10:00 as default
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+      
+      document.getElementById("edit-date").value = tomorrowStr;
+      document.getElementById("edit-time").value = "10:00";
+      document.getElementById("edit-status").value = "confirmed";
+      document.getElementById("edit-notes").value = "";
+      
+      document.getElementById("btn-delete-booking").style.display = "none";
+      document.getElementById("edit-booking-modal").classList.add("active");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("active");
+    }
+
+    function saveBookingChanges(e) {
+      e.preventDefault();
+      const id = document.getElementById("edit-booking-id").value;
+      const name = document.getElementById("edit-client-name").value;
+      const phone = document.getElementById("edit-client-phone").value;
+      const email = document.getElementById("edit-client-email").value;
+      const service = document.getElementById("edit-service").value;
+      const stylist = document.getElementById("edit-stylist").value;
+      const date = document.getElementById("edit-date").value;
+      const time = document.getElementById("edit-time").value;
+      const status = document.getElementById("edit-status").value;
+      const notes = document.getElementById("edit-notes").value;
+      
+      const payload = { name, phone, email, service, stylist, date, time, status, notes };
+      
+      let url = '/api/admin/bookings';
+      let method = 'POST';
+      
+      if (id) {
+        url = `/api/admin/bookings/${id}`;
+        method = 'PUT';
+      }
+      
+      fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(errData => { throw new Error(errData.error || "Conflict"); });
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data.success) {
+          closeModal('edit-booking-modal');
+          loadBookings();
+        }
+      })
+      .catch(err => {
+        alert(`Error al guardar la reserva: ${err.message}. Aquest professional ja té una cita en aquest horari.`);
+      });
+    }
+
+    function deleteBooking() {
+      const id = document.getElementById("edit-booking-id").value;
+      if (!id) return;
+      
+      if (confirm("Segur que vols cancel·lar/eliminar aquesta cita? L'horari quedarà totalment alliberat.")) {
+        fetch(`/api/admin/bookings/${id}`, {
+          method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            closeModal('edit-booking-modal');
+            loadBookings();
+          }
+        });
+      }
+    }
+
+    // --- NEW SCHEDULES & ABSENCES LOGIC ---
+    let absenceCurrentYear = 2026;
+    let absenceCurrentMonth = 4; // 0-indexed: 4 = Maig
+    let allBlockedTimes = [];
+
+    function initSchedulesTab() {
+      renderWorkerSelectDropdown();
+      loadBlockedTimes();
+    }
+
+    function renderWorkerSelectDropdown() {
+      const select = document.getElementById("schedule-worker-select");
+      if (!select) return;
+      
+      select.innerHTML = "";
+      
+      const allOpt = document.createElement("option");
+      allOpt.value = "all";
+      allOpt.textContent = "Tots els treballadors (Vista Equip)";
+      if (activeStylistIdForSchedule === "all") allOpt.selected = true;
+      select.appendChild(allOpt);
+
+      workers.forEach(w => {
+        const option = document.createElement("option");
+        option.value = w.id;
+        option.textContent = w.name;
+        if (w.id === activeStylistIdForSchedule) {
+          option.selected = true;
+        }
+        select.appendChild(option);
+      });
+
+      updateActiveWorkerDisplay();
+    }
+
+    function onWorkerSelectChange(workerId) {
+      activeStylistIdForSchedule = workerId;
+      updateActiveWorkerDisplay();
+    }
+
+    function openScheduleModal() {
+      const isAll = activeStylistIdForSchedule === 'all';
+      const worker = isAll ? null : workers.find(w => w.id === activeStylistIdForSchedule);
+      const modalWorkerName = document.getElementById("modal-worker-name");
+      if (modalWorkerName) modalWorkerName.textContent = isAll ? 'Tot l\'equip' : (worker ? worker.name : 'Treballador/a');
+      
+      renderScheduleEditor();
+      document.getElementById("edit-schedule-modal").style.display = "flex";
+    }
+
+    function closeScheduleModal() {
+      document.getElementById("edit-schedule-modal").style.display = "none";
+    }
+
+    function updateActiveWorkerDisplay() {
+      const isAll = activeStylistIdForSchedule === 'all';
+      const worker = isAll ? null : workers.find(w => w.id === activeStylistIdForSchedule);
+      const name = isAll ? 'Tot l\'equip' : (worker ? worker.name : 'Treballador/a');
+      
+      const badge = document.getElementById("current-editor-stylist-badge");
+      if (badge) badge.textContent = name;
+
+      const vacWorker = document.getElementById("vacation-worker-name");
+      if (vacWorker) vacWorker.textContent = name;
+
+      renderScheduleEditor();
+      renderAbsenceCalendar();
+      renderAbsenceList();
+      updateVacationSummary();
+    }
+
+    function updateVacationSummary() {
+      const isAll = activeStylistIdForSchedule === 'all';
+      const card = document.querySelector(".vacation-summary-card");
+      
+      if (isAll) {
+        if (card) card.style.display = "none";
+        return;
+      }
+      
+      if (card) card.style.display = "block";
+      
+      const titleEl = document.querySelector(".vacation-title-group h4");
+      const assignedLabelEl = document.querySelectorAll(".vacation-stat-item .stat-label")[0];
+      const enjoyedLabelEl = document.querySelectorAll(".vacation-stat-item .stat-label")[1];
+      const availableLabelEl = document.querySelectorAll(".vacation-stat-item .stat-label")[2];
+
+      const assignedEl = document.getElementById("vacation-assigned-count");
+      const enjoyedEl = document.getElementById("vacation-enjoyed-count");
+      const availableEl = document.getElementById("vacation-available-count");
+      const fillEl = document.getElementById("vacation-progress-fill");
+      const captionEl = document.getElementById("vacation-progress-text");
+
+      if (titleEl) titleEl.textContent = "Balanç de vacances · 2026";
+      if (assignedLabelEl) assignedLabelEl.textContent = "Dies assignats";
+      if (enjoyedLabelEl) enjoyedLabelEl.textContent = "Dies gaudits";
+      if (availableLabelEl) availableLabelEl.textContent = "Dies disponibles";
+
+      const workerBlocks = allBlockedTimes.filter(b => b.worker_id === activeStylistIdForSchedule);
+      const vacancesBlocks = workerBlocks.filter(b => detectAbsenceType(b.description) === 'vacances');
+      
+      const totalAssigned = 23;
+      const enjoyedCount = vacancesBlocks.length;
+      const availableCount = Math.max(0, totalAssigned - enjoyedCount);
+      const availablePercent = (availableCount / totalAssigned) * 100;
+
+      if (assignedEl) assignedEl.textContent = totalAssigned;
+      if (enjoyedEl) enjoyedEl.textContent = enjoyedCount;
+      if (availableEl) availableEl.textContent = availableCount;
+      
+      if (fillEl) {
+        fillEl.style.width = `${((totalAssigned - availableCount) / totalAssigned * 100).toFixed(1)}%`;
+        
+        if (availablePercent > 60) {
+          fillEl.style.background = 'linear-gradient(90deg, #A8D5BA, #5B9A68)';
+        } else if (availablePercent >= 30) {
+          fillEl.style.background = 'linear-gradient(90deg, #E6C594, #AF8E63)';
+        } else {
+          fillEl.style.background = 'linear-gradient(90deg, #E8A39C, #D96B64)';
+        }
+      }
+      
+      if (captionEl) captionEl.textContent = `${enjoyedCount} utilitzats · ${availableCount} disponibles`;
+    }
+
+    function renderScheduleEditor() {
+      const container = document.getElementById("schedule-days-container");
+      if (!container) return;
+      container.innerHTML = "";
+      
+      const stylist = workers.find(w => w.id === activeStylistIdForSchedule);
+      if (!stylist) return;
+      
+      const daysOfWeek = ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte'];
+      
+      const sortedSchedule = [...stylist.schedule].sort((a,b) => {
+        let valA = a.day_of_week === 0 ? 7 : a.day_of_week;
+        let valB = b.day_of_week === 0 ? 7 : b.day_of_week;
+        return valA - valB;
+      });
+      
+      sortedSchedule.forEach(s => {
+        const item = document.createElement("div");
+        item.className = `schedule-day-item ${s.is_active ? '' : 'is-closed'}`;
+        
+        item.innerHTML = `
+          <span class="day-name-box">${daysOfWeek[s.day_of_week]}</span>
+          <div class="time-inputs-group">
+            <input type="time" class="time-input-field" value="${s.start_time || '10:00'}" data-day="${s.day_of_week}" data-type="start" ${s.is_active ? '' : 'disabled'}>
+            <span class="time-separator">—</span>
+            <input type="time" class="time-input-field" value="${s.end_time || '20:00'}" data-day="${s.day_of_week}" data-type="end" ${s.is_active ? '' : 'disabled'}>
+          </div>
+          <label class="day-status-toggle">
+            <input type="checkbox" ${s.is_active ? 'checked' : ''} data-day="${s.day_of_week}" onchange="toggleDayActiveState(this)">
+            <span>${s.is_active ? 'Obert' : 'Tancat'}</span>
+          </label>
+        `;
+        
+        container.appendChild(item);
+      });
+    }
+
+    function toggleDayActiveState(checkbox) {
+      const day = checkbox.getAttribute("data-day");
+      const isChecked = checkbox.checked;
+      const row = checkbox.closest(".schedule-day-item");
+      const span = checkbox.parentElement.querySelector("span");
+      
+      if (isChecked) {
+        row.classList.remove("is-closed");
+        span.textContent = "Obert";
+      } else {
+        row.classList.add("is-closed");
+        span.textContent = "Tancat";
+      }
+      
+      document.querySelectorAll(`input[data-day="${day}"].time-input-field`).forEach(input => {
+        input.disabled = !isChecked;
+      });
+    }
+
+    function saveSchedule(e) {
+      e.preventDefault();
+      
+      const schedulesPayload = [];
+      const days = [0, 1, 2, 3, 4, 5, 6];
+      
+      days.forEach(day => {
+        const startInput = document.querySelector(`input[data-day="${day}"][data-type="start"]`);
+        const endInput = document.querySelector(`input[data-day="${day}"][data-type="end"]`);
+        const checkbox = document.querySelector(`input[type="checkbox"][data-day="${day}"]`);
+        
+        if (startInput && endInput && checkbox) {
+          schedulesPayload.push({
+            day_of_week: day,
+            start_time: startInput.value,
+            end_time: endInput.value,
+            is_active: checkbox.checked ? 1 : 0
+          });
+        }
+      });
+      
+      fetch(`/api/admin/workers/${activeStylistIdForSchedule}/schedule`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ schedule: schedulesPayload })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("Horari de treballador desat amb èxit!");
+          closeScheduleModal();
+          loadWorkersData();
+        }
+      });
+    }
+
+    function prevAbsenceMonth() {
+      absenceCurrentMonth--;
+      if (absenceCurrentMonth < 0) {
+        absenceCurrentMonth = 11;
+        absenceCurrentYear--;
+      }
+      renderAbsenceCalendar();
+      renderAbsenceList();
+    }
+
+    function nextAbsenceMonth() {
+      absenceCurrentMonth++;
+      if (absenceCurrentMonth > 11) {
+        absenceCurrentMonth = 0;
+        absenceCurrentYear++;
+      }
+      renderAbsenceCalendar();
+      renderAbsenceList();
+    }
+
+    function renderAbsenceCalendar() {
+      const monthNames = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"];
+      const titleEl = document.getElementById("absence-month-title");
+      if (titleEl) {
+        titleEl.textContent = `${monthNames[absenceCurrentMonth]} ${absenceCurrentYear}`;
+      }
+      
+      const grid = document.getElementById("mini-calendar-grid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      
+      const firstDay = new Date(absenceCurrentYear, absenceCurrentMonth, 1);
+      const lastDay = new Date(absenceCurrentYear, absenceCurrentMonth + 1, 0);
+      
+      let startingDayIndex = firstDay.getDay() - 1;
+      if (startingDayIndex === -1) startingDayIndex = 6; // Diumenge
+      
+      const totalDays = lastDay.getDate();
+      const prevMonthLastDay = new Date(absenceCurrentYear, absenceCurrentMonth, 0).getDate();
+      
+      // Previous month padding
+      for (let i = startingDayIndex - 1; i >= 0; i--) {
+        const cell = document.createElement("div");
+        cell.className = "mini-calendar-day-cell other-month";
+        cell.textContent = prevMonthLastDay - i;
+        grid.appendChild(cell);
+      }
+      
+      const today = new Date();
+      const isAll = activeStylistIdForSchedule === 'all';
+      
+      if (!isAll) {
+        // --- VISTA INDIVIDUAL: Només la treballadora seleccionada (100% Neta) ---
+        const workerBlocks = allBlockedTimes.filter(b => b.worker_id === activeStylistIdForSchedule);
+
+        for (let d = 1; d <= totalDays; d++) {
+          const cell = document.createElement("div");
+          const dateStr = `${absenceCurrentYear}-${String(absenceCurrentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+          
+          let cellClasses = "mini-calendar-day-cell";
+          if (today.getFullYear() === absenceCurrentYear && today.getMonth() === absenceCurrentMonth && today.getDate() === d) {
+            cellClasses += " today";
+          }
+          
+          cell.className = cellClasses;
+          
+          const dayNumSpan = document.createElement("span");
+          dayNumSpan.textContent = d;
+          cell.appendChild(dayNumSpan);
+
+          const dayAbsence = workerBlocks.find(b => b.date === dateStr);
+          if (dayAbsence) {
+            cell.classList.add("has-absence");
+            const type = detectAbsenceType(dayAbsence.description);
+            cell.classList.add(`absence-${type}`);
+            
+            const badge = document.createElement("span");
+            badge.className = "absence-day-badge";
+            badge.textContent = getAbsenceBadgeLabel(type);
+            cell.appendChild(badge);
+
+            cell.title = `${getAbsenceLabel(type)}: ${cleanDescriptionText(dayAbsence.description)}`;
+          }
+          
+          grid.appendChild(cell);
+        }
+      } else {
+        // --- VISTA TOTS (EQUIP): Absències de tot l'equip al mateix calendari ---
+        for (let d = 1; d <= totalDays; d++) {
+          const cell = document.createElement("div");
+          const dateStr = `${absenceCurrentYear}-${String(absenceCurrentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+          
+          let cellClasses = "mini-calendar-day-cell";
+          if (today.getFullYear() === absenceCurrentYear && today.getMonth() === absenceCurrentMonth && today.getDate() === d) {
+            cellClasses += " today";
+          }
+          
+          cell.className = cellClasses;
+          
+          const dayNumSpan = document.createElement("span");
+          dayNumSpan.textContent = d;
+          cell.appendChild(dayNumSpan);
+
+          const dateAbsences = allBlockedTimes.filter(b => b.date === dateStr);
+          if (dateAbsences.length > 0) {
+            cell.classList.add("has-absence");
+            
+            const pillList = document.createElement("div");
+            pillList.className = "team-absence-pill-list";
+            
+            let tooltipTexts = [];
+            
+            dateAbsences.forEach(b => {
+              const type = detectAbsenceType(b.description);
+              const workerName = b.worker_name || getWorkerNameById(b.worker_id);
+              
+              const pill = document.createElement("div");
+              pill.className = `team-absence-pill ${type}`;
+              pill.textContent = `${getAbsenceEmoji(type)} ${workerName}`;
+              pillList.appendChild(pill);
+              
+              tooltipTexts.push(`${workerName} (${getAbsenceLabel(type)}: ${cleanDescriptionText(b.description)})`);
+            });
+            
+            cell.appendChild(pillList);
+            cell.title = tooltipTexts.join('\n');
+          }
+          
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    function getAbsenceEmoji(type) {
+      switch(type) {
+        case 'vacances': return '🏖️';
+        case 'maternitat': return '🤰';
+        case 'baixa': return '🩺';
+        case 'bloquejat': return '🔒';
+        default: return '📝';
+      }
+    }
+
+    function getWorkerNameById(id) {
+      const w = workers.find(item => item.id === id);
+      return w ? w.name : 'Treballador/a';
+    }
+
+    function detectAbsenceType(desc) {
+      if (!desc) return 'bloquejat';
+      const d = desc.toLowerCase();
+      if (d.includes('vacan') || d.includes('vacances')) return 'vacances';
+      if (d.includes('matern') || d.includes('baixa maternitat')) return 'maternitat';
+      if (d.includes('medica') || d.includes('mèdica') || d.includes('baixa')) return 'baixa';
+      if (d.includes('bloq') || d.includes('no disponible')) return 'bloquejat';
+      return 'altres';
+    }
+
+    function getAbsenceLabel(type) {
+      switch(type) {
+        case 'vacances': return '🏖 Vacances';
+        case 'maternitat': return '🤰 Baixa de maternitat';
+        case 'baixa': return '🩺 Baixa mèdica';
+        case 'bloquejat': return '🔒 No disponible';
+        default: return '📝 Altres absències';
+      }
+    }
+
+    function getAbsenceBadgeLabel(type) {
+      switch(type) {
+        case 'vacances': return '🏖️ Vacances';
+        case 'maternitat': return '🤰 Maternitat';
+        case 'baixa': return '🩺 Baixa';
+        case 'bloquejat': return '🔒 Bloquejat';
+        default: return '📝 Altres';
+      }
+    }
+
+    function cleanDescriptionText(desc) {
+      if (!desc) return '';
+      return desc.replace(/\[.*?\]\s*/, '');
+    }
+
+    function getCleanAbsenceSubtitle(type, rawDescText) {
+      const typeLabel = getAbsenceLabel(type);
+      const pureTitle = getAbsencePureTitle(type).toLowerCase();
+      
+      if (!rawDescText) return typeLabel;
+      
+      const parts = rawDescText.split('·').map(p => p.trim()).filter(p => {
+        if (!p) return false;
+        const low = p.toLowerCase();
+        return low !== pureTitle && low !== 'vacances' && low !== 'baixa mèdica' && low !== 'baixa de maternitat' && low !== 'no disponible' && low !== 'altres absències';
+      });
+
+      if (parts.length > 0) {
+        const uniqueParts = [...new Set(parts)];
+        return `${typeLabel} · ${uniqueParts.join(' · ')}`;
+      }
+      
+      return typeLabel;
+    }
+
+    function saveAbsence(e) {
+      e.preventDefault();
+      const type = document.getElementById("absence-type").value;
+      const startDate = document.getElementById("absence-start-date").value;
+      const endDate = document.getElementById("absence-end-date").value;
+      const userDesc = document.getElementById("absence-desc").value;
+      
+      if (!startDate || !endDate) return;
+      
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      if (end < start) {
+        alert("La data de fi no pot ser anterior a la data d'inici.");
+        return;
+      }
+      
+      const targetWorkerId = activeStylistIdForSchedule === 'all' ? (workers[0] ? workers[0].id : 'alba') : activeStylistIdForSchedule;
+
+      const typeLabels = {
+        'vacances': 'Vacances',
+        'maternitat': 'Baixa de maternitat',
+        'baixa': 'Baixa mèdica',
+        'bloquejat': 'No disponible',
+        'altres': 'Altres absències'
+      };
+      
+      const noteText = userDesc ? userDesc.trim() : '';
+      const description = noteText ? `[${type}|${startDate}|${endDate}] ${typeLabels[type]} · ${noteText}` : `[${type}|${startDate}|${endDate}] ${typeLabels[type]}`;
+      
+      const promises = [];
+      const cur = new Date(start);
+      while (cur <= end) {
+        const dateStr = cur.toISOString().split('T')[0];
+        const payload = {
+          worker_id: targetWorkerId,
+          date: dateStr,
+          start_time: "08:00",
+          end_time: "21:00",
+          description: description
+        };
+        
+        promises.push(
+          fetch('/api/admin/blocked_times', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+        );
+        
+        cur.setDate(cur.getDate() + 1);
+      }
+      
+      Promise.all(promises).then(() => {
+        document.getElementById("absence-start-date").value = "";
+        document.getElementById("absence-end-date").value = "";
+        document.getElementById("absence-desc").value = "";
+        loadBlockedTimes();
+      });
+    }
+
+    function loadBlockedTimes() {
+      fetch('/api/admin/blocked_times')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            allBlockedTimes = data.blocked_times || [];
+            renderAbsenceCalendar();
+            renderAbsenceList();
+            updateVacationSummary();
+          }
+        });
+    }
+
+    function renderAbsenceList() {
+      const container = document.getElementById("absence-list-container");
+      if (!container) return;
+      container.innerHTML = "";
+      
+      const isAll = activeStylistIdForSchedule === 'all';
+      const workerBlocks = isAll ? allBlockedTimes : allBlockedTimes.filter(b => b.worker_id === activeStylistIdForSchedule);
+      
+      if (workerBlocks.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:0.8rem; color:var(--text-muted); font-size:0.75rem;">No hi ha absències o bloquejos enregistrats.</div>';
+        return;
+      }
+
+      // Group blocks by worker_id, description & consecutive date range
+      const groupedRanges = [];
+      const sortedBlocks = [...workerBlocks].sort((a,b) => a.date.localeCompare(b.date));
+      
+      sortedBlocks.forEach(b => {
+        const type = detectAbsenceType(b.description);
+        const descText = cleanDescriptionText(b.description);
+        const workerName = b.worker_name || getWorkerNameById(b.worker_id);
+        
+        if (groupedRanges.length > 0) {
+          const lastGroup = groupedRanges[groupedRanges.length - 1];
+          if (lastGroup.workerId === b.worker_id && lastGroup.description === b.description) {
+            const lastDate = new Date(lastGroup.endDate);
+            const curDate = new Date(b.date);
+            const diffDays = Math.round((curDate - lastDate) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) {
+              lastGroup.endDate = b.date;
+              lastGroup.ids.push(b.id);
+              return;
+            }
+          }
+        }
+        
+        groupedRanges.push({
+          workerId: b.worker_id,
+          workerName: workerName,
+          startDate: b.date,
+          endDate: b.date,
+          description: b.description,
+          descText: descText,
+          type: type,
+          ids: [b.id]
+        });
+      });
+      
+      groupedRanges.forEach(group => {
+        const item = document.createElement("div");
+        item.className = `absence-list-item ${group.type}`;
+        
+        let dateRangeLabel = "";
+        if (group.startDate === group.endDate) {
+          dateRangeLabel = formatDateString(group.startDate);
+        } else {
+          dateRangeLabel = formatRangeDateString(group.startDate, group.endDate);
+        }
+        
+        const subText = getCleanAbsenceSubtitle(group.type, group.descText);
+        const prefixName = isAll ? `<strong style="color:var(--color-accent-caramel); display:inline-block; margin-right:4px;">${group.workerName}:</strong> ` : '';
+        
+        item.innerHTML = `
+          <div class="absence-item-info">
+            <span class="absence-item-dates" style="font-weight:700; color:var(--text-dark); display:block;">${dateRangeLabel}</span>
+            <span class="absence-item-desc" style="font-size:0.78rem; color:var(--text-muted);">${prefixName}${subText}</span>
+          </div>
+          <button type="button" class="btn-delete-absence" onclick="deleteAbsenceGroup('${group.ids.join(',')}')" title="Eliminar absència">&times;</button>
+        `;
+        
+        container.appendChild(item);
+      });
+    }
+
+    function getAbsencePureTitle(type) {
+      switch(type) {
+        case 'vacances': return 'Vacances';
+        case 'maternitat': return 'Baixa de maternitat';
+        case 'baixa': return 'Baixa mèdica';
+        case 'bloquejat': return 'No disponible';
+        default: return 'Altres absències';
+      }
+    }
+
+    function formatRangeDateString(startStr, endStr) {
+      if (!startStr || !endStr) return "";
+      const p1 = startStr.split("-");
+      const p2 = endStr.split("-");
+      const d1 = new Date(p1[0], p1[1] - 1, p1[2]);
+      const d2 = new Date(p2[0], p2[1] - 1, p2[2]);
+      
+      const d1Day = d1.getDate();
+      const d2Day = d2.getDate();
+      const monthLabel = d2.toLocaleDateString('ca-ES', { month: 'long', year: 'numeric' });
+      
+      if (p1[1] === p2[1]) {
+        return `${d1Day} – ${d2Day} de ${monthLabel}`;
+      } else {
+        const m1Label = d1.toLocaleDateString('ca-ES', { month: 'long' });
+        return `${d1Day} de ${m1Label} – ${d2Day} de ${monthLabel}`;
+      }
+    }
+
+    function deleteAbsenceGroup(idsStr) {
+      if (confirm("Segur que vols eliminar aquest període d'absència?")) {
+        const ids = idsStr.split(',');
+        const promises = ids.map(id => fetch(`/api/admin/blocked_times/${id}`, { method: 'DELETE' }));
+        Promise.all(promises).then(() => {
+          loadBlockedTimes();
+        });
+      }
+    }
+
+    function formatDateString(dateStr) {
+      if (!dateStr) return "";
+      const parts = dateStr.split("-");
+      const d = new Date(parts[0], parts[1] - 1, parts[2]);
+      return d.toLocaleDateString('ca-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    // ==========================================================================
+    // LOGIC: ANALYTICS DASHBOARD & SUBTABS (5 SUBTABS)
+    // ==========================================================================
+    let analyticsActiveSubtab = 'summary';
+    let analyticsCurrentPeriod = 'month';
+    let analyticsComparePeriod = 'none'; // 'none' per defecte (sense comparació ni percentatges)
+
+    // Chart instances
+    let chartSummaryBookingsInst = null;
+    let chartSummaryRevenueInst = null;
+    let chartBookingsLineInst = null;
+    let chartBookingsStatusInst = null;
+    let chartBookingsStatusCompareInst = null;
+    let chartSalesRevenueInst = null;
+    let chartSalesBreakdownInst = null;
+    let chartClientsFreqInst = null;
+    let chartClientsGrowthInst = null;
+    let chartWebTrafficInst = null;
+
+    function initAnalyticsTab() {
+      renderAnalyticsData(analyticsCurrentPeriod);
+    }
+
+    function switchAnalyticsSubtab(subtab, e) {
+      analyticsActiveSubtab = subtab;
+      
+      const navItems = document.querySelectorAll(".analytics-subnav-item");
+      navItems.forEach(item => item.classList.remove("active"));
+      
+      if (e && e.currentTarget) {
+        e.currentTarget.classList.add("active");
+      } else {
+        const subtabNames = ['summary', 'bookings', 'sales', 'clients', 'web'];
+        const idx = subtabNames.indexOf(subtab);
+        if (idx !== -1 && navItems[idx]) navItems[idx].classList.add("active");
+      }
+
+      document.querySelectorAll(".analytics-subtab-panel").forEach(p => p.style.display = "none");
+      
+      const activePanel = document.getElementById(`subtab-${subtab}`);
+      if (activePanel) activePanel.style.display = "block";
+
+      renderAnalyticsData(analyticsCurrentPeriod);
+    }
+
+    function onAnalyticsPeriodChange(period) {
+      analyticsCurrentPeriod = period;
+      const customPickerBox = document.getElementById("custom-date-picker-container");
+      if (customPickerBox) {
+        customPickerBox.style.display = period === 'custom' ? 'flex' : 'none';
+      }
+      renderAnalyticsData(period);
+    }
+
+    function onAnalyticsCompareChange(compareVal) {
+      analyticsComparePeriod = compareVal;
+      renderAnalyticsData(analyticsCurrentPeriod);
+    }
+
+    function applyCustomDateRange() {
+      const start = document.getElementById("custom-start-date").value;
+      const end = document.getElementById("custom-end-date").value;
+      if (!start || !end) {
+        alert("Si us plau, selecciona una data inicial i una data final.");
+        return;
+      }
+      renderAnalyticsData('custom');
+    }
+
+    const analyticsMockData = {
+      today: {
+        bookings: '38', bookingsTrend: '↑ +8,5%', revenue: '1.420 €', revenueTrend: '↑ +10,2%', products: '22', productsTrend: '↑ +12,0%', clients: '31', clientsTrend: '↑ +5,1%',
+        labels: ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00'],
+        bookingsCurrent: [4, 7, 5, 6, 9, 7], bookingsPrev: [3, 6, 4, 5, 8, 6], revenueCurrent: [180, 310, 220, 270, 420, 340],
+        subText: 'Avui'
+      },
+      last7: {
+        bookings: '248', bookingsTrend: '↑ +12,4%', revenue: '8.420 €', revenueTrend: '↑ +8,2%', products: '137', productsTrend: '↑ +15,3%', clients: '186', clientsTrend: '↑ +6,8%',
+        labels: ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'],
+        bookingsCurrent: [32, 38, 41, 39, 48, 50, 0], bookingsPrev: [28, 34, 36, 35, 42, 45, 0], revenueCurrent: [1120, 1350, 1480, 1390, 1850, 2230, 0],
+        subText: 'Aquesta setmana'
+      },
+      last30: {
+        bookings: '248', bookingsTrend: '↑ +12,4%', revenue: '8.420 €', revenueTrend: '↑ +8,2%', products: '137', productsTrend: '↑ +15,3%', clients: '186', clientsTrend: '↑ +6,8%',
+        labels: ['Set 1', 'Set 2', 'Set 3', 'Set 4'],
+        bookingsCurrent: [58, 62, 65, 63], bookingsPrev: [52, 55, 58, 56], revenueCurrent: [1980, 2100, 2250, 2090],
+        subText: 'Últims 30 dies'
+      },
+      month: {
+        bookings: '248', bookingsTrend: '↑ +12,4%', revenue: '8.420 €', revenueTrend: '↑ +8,2%', products: '137', productsTrend: '↑ +15,3%', clients: '186', clientsTrend: '↑ +6,8%',
+        labels: ['Set 1', 'Set 2', 'Set 3', 'Set 4'],
+        bookingsCurrent: [58, 62, 65, 63], bookingsPrev: [52, 55, 58, 56], revenueCurrent: [1980, 2100, 2250, 2090],
+        subText: 'Aquest mes'
+      },
+      prevmonth: {
+        bookings: '220', bookingsTrend: '↑ +6,2%', revenue: '7.800 €', revenueTrend: '↑ +5,1%', products: '118', productsTrend: '↑ +9,0%', clients: '174', clientsTrend: '↑ +4,2%',
+        labels: ['Set 1', 'Set 2', 'Set 3', 'Set 4'],
+        bookingsCurrent: [52, 55, 58, 55], bookingsPrev: [48, 52, 54, 50], revenueCurrent: [1850, 1950, 2050, 1950],
+        subText: 'Mes anterior'
+      },
+      quarter: {
+        bookings: '710', bookingsTrend: '↑ +14,8%', revenue: '24.800 €', revenueTrend: '↑ +11,2%', products: '395', productsTrend: '↑ +16,0%', clients: '490', clientsTrend: '↑ +9,2%',
+        labels: ['Juny', 'Juliol', 'Agost'],
+        bookingsCurrent: [230, 248, 232], bookingsPrev: [200, 215, 205], revenueCurrent: [8100, 8420, 8280],
+        subText: 'Últims 3 mesos'
+      },
+      last6m: {
+        bookings: '1.420', bookingsTrend: '↑ +15,2%', revenue: '49.600 €', revenueTrend: '↑ +12,0%', products: '780', productsTrend: '↑ +17,1%', clients: '820', clientsTrend: '↑ +10,5%',
+        labels: ['Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago'],
+        bookingsCurrent: [220, 230, 240, 235, 248, 247], bookingsPrev: [190, 200, 210, 205, 215, 210], revenueCurrent: [7600, 8000, 8300, 8200, 8800, 8700],
+        subText: 'Últims 6 mesos'
+      },
+      year: {
+        bookings: '2.840', bookingsTrend: '↑ +16,2%', revenue: '98.500 €', revenueTrend: '↑ +13,4%', products: '1.540', productsTrend: '↑ +19,5%', clients: '1.250', clientsTrend: '↑ +12,0%',
+        labels: ['Gen', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago'],
+        bookingsCurrent: [310, 330, 350, 345, 370, 375, 390, 370], bookingsPrev: [270, 285, 300, 295, 315, 320, 335, 320], revenueCurrent: [10800, 11500, 12200, 12000, 12800, 13000, 13600, 12600],
+        subText: 'Aquest any'
+      },
+      prevyear: {
+        bookings: '2.440', bookingsTrend: '↑ +10,0%', revenue: '86.800 €', revenueTrend: '↑ +8,1%', products: '1.280', productsTrend: '↑ +12,3%', clients: '1.080', clientsTrend: '↑ +7,5%',
+        labels: ['Trim 1', 'Trim 2', 'Trim 3', 'Trim 4'],
+        bookingsCurrent: [580, 620, 640, 600], bookingsPrev: [520, 560, 580, 550], revenueCurrent: [20500, 22200, 22800, 21300],
+        subText: 'Any anterior'
+      },
+      last2y: {
+        bookings: '5.280', bookingsTrend: '↑ +13,1%', revenue: '185.300 €', revenueTrend: '↑ +10,8%', products: '2.820', productsTrend: '↑ +15,4%', clients: '1.950', clientsTrend: '↑ +9,8%',
+        labels: ['2025', '2026'],
+        bookingsCurrent: [2440, 2840], bookingsPrev: [2160, 2440], revenueCurrent: [86800, 98500],
+        subText: 'Últims 2 anys'
+      },
+      last3y: {
+        bookings: '7.440', bookingsTrend: '↑ +14,4%', revenue: '259.300 €', revenueTrend: '↑ +11,9%', products: '3.900', productsTrend: '↑ +17,0%', clients: '2.520', clientsTrend: '↑ +11,1%',
+        labels: ['2024', '2025', '2026'],
+        bookingsCurrent: [2160, 2440, 2840], bookingsPrev: [1880, 2160, 2440], revenueCurrent: [74000, 86800, 98500],
+        subText: 'Últims 3 anys'
+      },
+      custom: {
+        bookings: '150', bookingsTrend: '↑ +9,8%', revenue: '5.250 €', revenueTrend: '↑ +7,4%', products: '85', productsTrend: '↑ +11,2%', clients: '110', clientsTrend: '↑ +5,8%',
+        labels: ['Data A', 'Data B', 'Data C'],
+        bookingsCurrent: [45, 55, 50], bookingsPrev: [40, 50, 45], revenueCurrent: [1600, 1850, 1800],
+        subText: 'Període personalitzat'
+      }
+    };
+
+    function getPeriodLabel(period) {
+      switch (period) {
+        case 'today': return 'Avui';
+        case 'last7': return 'Aquesta setmana';
+        case 'last30': return 'Últims 30 dies';
+        case 'month': return 'Aquest mes';
+        case 'prevmonth': return 'Mes anterior';
+        case 'quarter': return 'Últims 3 mesos';
+        case 'last6m': return 'Últims 6 mesos';
+        case 'year': return 'Aquest any';
+        case 'prevyear': return 'Any anterior';
+        case 'last2y': return 'Últims 2 anys';
+        case 'last3y': return 'Últims 3 anys';
+        case 'custom': {
+          const s = document.getElementById("custom-start-date")?.value;
+          const e = document.getElementById("custom-end-date")?.value;
+          if (s && e) return `${s} - ${e}`;
+          return 'Període personalitzat';
+        }
+        default: return 'Aquest mes';
+      }
+    }
+
+    function getCompareLabel(compareVal) {
+      switch (compareVal) {
+        case 'prev_month': return 'Mes anterior';
+        case 'prev_quarter': return 'Trimestre anterior';
+        case 'prev_year': return 'Any anterior';
+        case 'custom': return 'Període personalitzat';
+        case 'none':
+        default: return 'No comparar';
+      }
+    }
+
+    function formatTrendIndicator(trendStr) {
+      // SI NO HI HA COMPARACIÓ ACTIVADA ('none'), RETORNA BUIT!
+      if (!analyticsComparePeriod || analyticsComparePeriod === 'none' || !trendStr) {
+        return '';
+      }
+      let colorStyle = 'color:#615A52; font-weight:700;';
+      if (trendStr.includes('↑') || trendStr.includes('+')) {
+        colorStyle = 'color:#2E7D32; font-weight:700;'; // verd suau
+      } else if (trendStr.includes('↓') || trendStr.includes('-')) {
+        colorStyle = 'color:#C64949; font-weight:700;'; // vermell suau
+      }
+      return `<span style="${colorStyle}">${trendStr}</span>`;
+    }
+
+    function generateSummaryInsights(period, data) {
+      const pLabel = getPeriodLabel(period);
+      const listEl = document.getElementById("summary-insights-list");
+      if (!listEl) return;
+
+      const isComparing = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+      const cLabel = isComparing ? getCompareLabel(analyticsComparePeriod) : '';
+
+      const isPositiveBookings = !(data.bookingsTrend && (data.bookingsTrend.includes('↓') || data.bookingsTrend.includes('-')));
+      const isPositiveRevenue = !(data.revenueTrend && (data.revenueTrend.includes('↓') || data.revenueTrend.includes('-')));
+
+      let html = '';
+
+      if (!isComparing) {
+        // SENSE COMPARACIÓ: Targetes visuals amb colors temàtics per a reserves, vendes i clients
+        html += `
+          <div class="insight-item" style="border-left: 4px solid #2E7D32; background: #F8FAF8; border-top:1px solid #E8F0E8; border-right:1px solid #E8F0E8; border-bottom:1px solid #E8F0E8;">
+            <div>
+              <span class="insight-badge insight-badge-green">📅 Reserves</span>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.96rem; margin-bottom: 0.35rem;">
+                Activitat principal: <span style="color:#2E7D32;">${data.bookings} reserves</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                Registrades durant <strong>${pLabel.toLowerCase()}</strong> amb un ritme sostingut a l'estudi.
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item" style="border-left: 4px solid #AF8E63; background: #FAF7F2; border-top:1px solid #EFEAE2; border-right:1px solid #EFEAE2; border-bottom:1px solid #EFEAE2;">
+            <div>
+              <span class="insight-badge insight-badge-caramel">💶 Ingressos totals</span>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.96rem; margin-bottom: 0.35rem;">
+                Facturació de <span style="color:#8C6A3B;">${data.revenue}</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                Volum global d'ingressos assolit durant <strong>${pLabel.toLowerCase()}</strong> entre perruqueria i botiga online.
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item" style="border-left: 4px solid #8D847E; background: #F7F6F5; border-top:1px solid #EAE8E6; border-right:1px solid #EAE8E6; border-bottom:1px solid #EAE8E6;">
+            <div>
+              <span class="insight-badge insight-badge-taupe">📦 Productes estrelles</span>
+              <div style="font-size: 0.96rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.35rem;">
+                <span style="color:#615A52;">${data.products} unitats</span> venudes a la botiga
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                El <strong>Xampú hidratant Nutritive</strong> encapçala les vendes amb 1.260 € generats.
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item" style="border-left: 4px solid #AF8E63; background: #FAF7F2; border-top:1px solid #EFEAE2; border-right:1px solid #EFEAE2; border-bottom:1px solid #EFEAE2;">
+            <div>
+              <span class="insight-badge insight-badge-caramel">👥 Fidelització</span>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.96rem; margin-bottom: 0.35rem;">
+                Base activa de <span style="color:#8C6A3B;">${data.clients} clients</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                Els clients recurrents representen més del 55% del volum total d'atencions al saló.
+              </div>
+            </div>
+          </div>`;
+      } else {
+        // AMB COMPARACIÓ: Targetes diferencials amb colors d'evolució (verd positiu o terracota negatiu)
+        const bookingColor = isPositiveBookings ? '#2E7D32' : '#C64949';
+        const bookingBg = isPositiveBookings ? '#F8FAF8' : '#FDF8F8';
+        const bookingBorder = isPositiveBookings ? '#E8F0E8' : '#F7E8E8';
+        const bookingBadgeClass = isPositiveBookings ? 'insight-badge-green' : 'insight-badge-red';
+
+        const revenueColor = isPositiveRevenue ? '#2E7D32' : '#C64949';
+        const revenueBg = isPositiveRevenue ? '#F8FAF8' : '#FDF8F8';
+        const revenueBorder = isPositiveRevenue ? '#E8F0E8' : '#F7E8E8';
+        const revenueBadgeClass = isPositiveRevenue ? 'insight-badge-green' : 'insight-badge-red';
+
+        html += `
+          <div class="insight-item" style="border-left: 4px solid ${bookingColor}; background: ${bookingBg}; border-top:1px solid ${bookingBorder}; border-right:1px solid ${bookingBorder}; border-bottom:1px solid ${bookingBorder};">
+            <div>
+              <span class="insight-badge ${bookingBadgeClass}">📅 Reserves ${data.bookingsTrend}</span>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.96rem; margin-bottom: 0.35rem;">
+                Volum de reserves: <span style="color:${bookingColor};">${data.bookings} reserves</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                Registrades durant <strong>${pLabel.toLowerCase()}</strong> en comparació amb <strong>${cLabel.toLowerCase()}</strong> (${data.bookingsTrend}).
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item" style="border-left: 4px solid ${revenueColor}; background: ${revenueBg}; border-top:1px solid ${revenueBorder}; border-right:1px solid ${revenueBorder}; border-bottom:1px solid ${revenueBorder};">
+            <div>
+              <span class="insight-badge ${revenueBadgeClass}">💶 Facturació ${data.revenueTrend}</span>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.96rem; margin-bottom: 0.35rem;">
+                Ingressos assolits: <span style="color:${revenueColor};">${data.revenue}</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                Generats durant <strong>${pLabel.toLowerCase()}</strong> respecte als assolits durant <strong>${cLabel.toLowerCase()}</strong> (${data.revenueTrend}).
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item" style="border-left: 4px solid #8D847E; background: #F7F6F5; border-top:1px solid #EAE8E6; border-right:1px solid #EAE8E6; border-bottom:1px solid #EAE8E6;">
+            <div>
+              <span class="insight-badge insight-badge-taupe">📦 Vendes de botiga ${data.productsTrend}</span>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.96rem; margin-bottom: 0.35rem;">
+                Unitats de producte: <span style="color:#615A52;">${data.products} unitats</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                Evolució de les vendes de productes a la botiga en comparació amb <strong>${cLabel.toLowerCase()}</strong>.
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-item" style="border-left: 4px solid #AF8E63; background: #FAF7F2; border-top:1px solid #EFEAE2; border-right:1px solid #EFEAE2; border-bottom:1px solid #EFEAE2;">
+            <div>
+              <span class="insight-badge insight-badge-caramel">👥 Creixement de base</span>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.96rem; margin-bottom: 0.35rem;">
+                Atenció a la clientela: <span style="color:#8C6A3B;">${data.clients} clients</span>
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">
+                Consolidació de la base de clients actius durant <strong>${pLabel.toLowerCase()}</strong> respecte a <strong>${cLabel.toLowerCase()}</strong>.
+              </div>
+            </div>
+          </div>`;
+      }
+
+      listEl.innerHTML = html;
+    }
+
+    function renderAnalyticsData(period) {
+      const data = analyticsMockData[period] || analyticsMockData['month'];
+
+      // Actualitza l'etiqueta del filtre a la capçalera del Resum
+      const pBadge = document.getElementById("summary-period-badge");
+      if (pBadge) {
+        if (analyticsComparePeriod && analyticsComparePeriod !== 'none') {
+          pBadge.textContent = `${getPeriodLabel(period)} vs. ${getCompareLabel(analyticsComparePeriod)}`;
+        } else {
+          pBadge.textContent = getPeriodLabel(period);
+        }
+      }
+
+      if (analyticsActiveSubtab === 'summary') {
+        const kBook = document.getElementById("kpi-summary-bookings");
+        const kBookTr = document.getElementById("kpi-summary-bookings-trend");
+        const kRev = document.getElementById("kpi-summary-revenue");
+        const kRevTr = document.getElementById("kpi-summary-revenue-trend");
+        const kProd = document.getElementById("kpi-summary-products");
+        const kProdTr = document.getElementById("kpi-summary-products-trend");
+        const kCli = document.getElementById("kpi-summary-clients");
+        const kCliTr = document.getElementById("kpi-summary-clients-trend");
+
+        if (kBook) kBook.textContent = data.bookings;
+        if (kBookTr) kBookTr.innerHTML = formatTrendIndicator(data.bookingsTrend);
+        
+        if (kRev) kRev.textContent = data.revenue;
+        if (kRevTr) kRevTr.innerHTML = formatTrendIndicator(data.revenueTrend);
+
+        if (kProd) kProd.textContent = data.products;
+        if (kProdTr) kProdTr.innerHTML = formatTrendIndicator(data.productsTrend);
+
+        if (kCli) kCli.textContent = data.clients;
+        if (kCliTr) kCliTr.innerHTML = formatTrendIndicator(data.clientsTrend);
+
+        generateSummaryInsights(period, data);
+      } else if (analyticsActiveSubtab === 'bookings') {
+        renderBookingsTabContent(data);
+      } else if (analyticsActiveSubtab === 'sales') {
+        renderSalesTabContent(data);
+      } else if (analyticsActiveSubtab === 'clients') {
+        renderClientsTabContent(data);
+      } else if (analyticsActiveSubtab === 'web') {
+        renderWebTabContent(data);
+      }
+    }
+
+    // Disable colored box in tooltips globally for cleaner editorial UI
+    if (window.Chart && window.Chart.defaults) {
+      Chart.defaults.plugins.tooltip.displayColors = false;
+    }
+
+    function renderBookingsTabContent(data) {
+      // 1. Dades visuals clares (Total i comparació opcional)
+      const bTotal = document.getElementById("bookings-tab-total");
+      const bComp = document.getElementById("bookings-tab-comparison");
+      if (bTotal) bTotal.textContent = `${data.bookings} reserves`;
+      if (bComp) {
+        if (analyticsComparePeriod && analyticsComparePeriod !== 'none') {
+          bComp.style.display = 'inline';
+          const trend = data.bookingsTrend || '↑ +12,4%';
+          bComp.textContent = trend;
+          if (trend.includes('↑') || trend.includes('+')) {
+            bComp.style.color = '#2E7D32'; // verd suau
+          } else if (trend.includes('↓') || trend.includes('-')) {
+            bComp.style.color = '#C64949'; // vermell suau
+          } else {
+            bComp.style.color = '#8D847E'; // marró neutre
+          }
+        } else {
+          bComp.style.display = 'none';
+        }
+      }
+
+      // 2. Gràfica d'evolució de reserves (1 línia si No comparar, 2 línies si comparar)
+      const ctxLine = document.getElementById('chart-bookings-detail-line');
+      if (ctxLine) {
+        if (chartBookingsLineInst) chartBookingsLineInst.destroy();
+
+        const pCurrentLabel = getPeriodLabel(analyticsCurrentPeriod);
+        const pCompareLabel = getCompareLabel(analyticsComparePeriod);
+        const isComparing = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+
+        const datasets = [
+          {
+            label: pCurrentLabel,
+            data: data.bookingsCurrent,
+            borderColor: '#AF8E63',
+            backgroundColor: 'rgba(175, 142, 99, 0.08)',
+            fill: true,
+            borderWidth: 2.5,
+            tension: 0.35
+          }
+        ];
+
+        if (isComparing) {
+          datasets.push({
+            label: pCompareLabel,
+            data: data.bookingsPrev || data.bookingsCurrent.map(v => Math.round(v * 0.88)),
+            borderColor: '#C5B7A8',
+            borderDash: [6, 6],
+            fill: false,
+            borderWidth: 2,
+            tension: 0.35
+          });
+        }
+
+        chartBookingsLineInst = new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: isComparing,
+                position: 'top',
+                align: 'end',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  boxWidth: 6,
+                  boxHeight: 6,
+                  font: { family: 'DM Sans', size: 11, weight: '600' },
+                  color: '#615A52'
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // 3. Ranking de serveis més reservats
+      renderServicesRankingInContainer("bookings-services-ranking-list");
+
+      // 4. Donut visual d'Estat de les reserves (1 cercle si No comparar, 2 cercles de costat si Comparar)
+      const wrapper = document.getElementById("bookings-status-donuts-wrapper");
+      const compareBox = document.getElementById("status-donut-box-compare");
+      const titleCurrent = document.getElementById("status-donut-title-current");
+      const titleCompare = document.getElementById("status-donut-title-compare");
+
+      const isComparingBookings = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+
+      if (titleCurrent) titleCurrent.textContent = getPeriodLabel(analyticsCurrentPeriod);
+
+      if (isComparingBookings) {
+        if (wrapper) wrapper.style.gridTemplateColumns = '1fr 1fr';
+        if (compareBox) compareBox.style.display = 'block';
+        if (titleCompare) titleCompare.textContent = getCompareLabel(analyticsComparePeriod);
+      } else {
+        if (wrapper) wrapper.style.gridTemplateColumns = '1fr';
+        if (compareBox) compareBox.style.display = 'none';
+      }
+
+      // Tooltip dinàmic i interactiu per als donuts de reserves: mostra l'estat, nombre de reserves i percentatge exacte
+      const donutLabels = ['Completades', 'Pendents', 'Cancel·lades', 'No presentades'];
+      const curColors = ['#2E7D32', '#C67D33', '#C64949', '#9E2B2B'];
+      const compColors = ['#81C784', '#FFB74D', '#E57373', '#E53935'];
+
+      // Calcular valors adaptats segons el total de reserves seleccionat
+      const curTotalNum = parseInt(String(data.bookings).replace(/\./g, '').replace(/,/g, '')) || 248;
+      const curCompletadas = Math.round(curTotalNum * 0.774);
+      const curPendents = Math.round(curTotalNum * 0.129);
+      const curCancel = Math.round(curTotalNum * 0.073);
+      const curNoPres = Math.max(0, curTotalNum - (curCompletadas + curPendents + curCancel));
+      const curDataValues = [curCompletadas, curPendents, curCancel, curNoPres];
+
+      const compTotalNum = Math.round(curTotalNum * 0.846);
+      const compCompletadas = Math.round(compTotalNum * 0.785);
+      const compPendents = Math.round(compTotalNum * 0.133);
+      const compCancel = Math.round(compTotalNum * 0.057);
+      const compNoPres = Math.max(0, compTotalNum - (compCompletadas + compPendents + compCancel));
+      const compDataValues = [compCompletadas, compPendents, compCancel, compNoPres];
+
+      // Actualitzar textos totals als blocs
+      const totalCurEl = document.getElementById("status-donut-total-current");
+      if (totalCurEl) totalCurEl.textContent = `${curTotalNum} reserves`;
+
+      const totalCompEl = document.getElementById("status-donut-total-compare");
+      if (totalCompEl) totalCompEl.textContent = `${compTotalNum} reserves`;
+
+      // Helper function to update center overlay text and legend highlights on hover
+      function handleDonutHover(target, index, dataVals, labels, colors, total) {
+        const centerLabel = document.getElementById(`status-donut-center-label-${target}`);
+        const centerVal = document.getElementById(`status-donut-center-val-${target}`);
+        const centerSub = document.getElementById(`status-donut-center-sub-${target}`);
+        const prefix = target === 'current' ? 'cur' : 'comp';
+
+        if (index !== null && index !== undefined && index >= 0) {
+          const val = dataVals[index];
+          const pct = total > 0 ? ((val / total) * 100).toFixed(1).replace('.', ',') : '0';
+          const label = labels[index];
+          const color = colors[index];
+
+          if (centerLabel) {
+            centerLabel.textContent = label.toUpperCase();
+            centerLabel.style.color = color;
+          }
+          if (centerVal) {
+            centerVal.textContent = val;
+            centerVal.style.color = color;
+          }
+          if (centerSub) {
+            centerSub.textContent = `${pct}% del total`;
+            centerSub.style.color = 'var(--text-muted)';
+          }
+
+          // Highlight corresponding summary tag below chart
+          for (let i = 0; i < 4; i++) {
+            const el = document.getElementById(`summary-${prefix}-${i}`);
+            if (el) {
+              if (i === index) {
+                el.style.backgroundColor = `${color}25`;
+                el.style.transform = 'scale(1.06)';
+                el.style.opacity = '1';
+              } else {
+                el.style.backgroundColor = 'transparent';
+                el.style.transform = 'scale(1)';
+                el.style.opacity = '0.45';
+              }
+            }
+          }
+        } else {
+          // Reset to default total state
+          if (centerLabel) {
+            centerLabel.textContent = 'TOTAL';
+            centerLabel.style.color = 'var(--text-muted)';
+          }
+          if (centerVal) {
+            centerVal.textContent = total;
+            centerVal.style.color = 'var(--text-dark)';
+          }
+          if (centerSub) {
+            centerSub.textContent = 'reserves';
+            centerSub.style.color = 'var(--text-muted)';
+          }
+
+          for (let i = 0; i < 4; i++) {
+            const el = document.getElementById(`summary-${prefix}-${i}`);
+            if (el) {
+              el.style.backgroundColor = 'transparent';
+              el.style.transform = 'scale(1)';
+              el.style.opacity = '1';
+            }
+          }
+        }
+      }
+
+      // Sync summary text values dynamically
+      for (let i = 0; i < 4; i++) {
+        const curEl = document.getElementById(`summary-cur-${i}`);
+        if (curEl) curEl.textContent = `${curDataValues[i]} ${donutLabels[i].toLowerCase()}`;
+        const compEl = document.getElementById(`summary-comp-${i}`);
+        if (compEl) compEl.textContent = `${compDataValues[i]} ${donutLabels[i].toLowerCase()}`;
+      }
+
+      const donutCurrentTooltipOptions = {
+        enabled: true,
+        displayColors: true,
+        backgroundColor: '#2A2621',
+        titleFont: { family: 'DM Sans', size: 12, weight: '700' },
+        bodyFont: { family: 'DM Sans', size: 12 },
+        padding: 10,
+        cornerRadius: 8,
+        usePointStyle: true,
+        callbacks: {
+          title: function(tooltipItems) {
+            if (!tooltipItems || !tooltipItems.length) return '';
+            const item = tooltipItems[0];
+            const labelName = item.label || '';
+            return isComparingBookings ? `${labelName} (${getPeriodLabel(analyticsCurrentPeriod)})` : labelName;
+          },
+          label: function(context) {
+            const val = context.raw || 0;
+            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+            const pct = total > 0 ? ((val / total) * 100).toFixed(1).replace('.', ',') : '0';
+            return ` ${val} reserves (${pct}% del total)`;
+          }
+        }
+      };
+
+      const donutCompareTooltipOptions = {
+        enabled: true,
+        displayColors: true,
+        backgroundColor: '#2A2621',
+        titleFont: { family: 'DM Sans', size: 12, weight: '700' },
+        bodyFont: { family: 'DM Sans', size: 12 },
+        padding: 10,
+        cornerRadius: 8,
+        usePointStyle: true,
+        callbacks: {
+          title: function(tooltipItems) {
+            if (!tooltipItems || !tooltipItems.length) return '';
+            const item = tooltipItems[0];
+            const labelName = item.label || '';
+            return `${labelName} (${getCompareLabel(analyticsComparePeriod)})`;
+          },
+          label: function(context) {
+            const val = context.raw || 0;
+            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+            const pct = total > 0 ? ((val / total) * 100).toFixed(1).replace('.', ',') : '0';
+            return ` ${val} reserves (${pct}% del total)`;
+          }
+        }
+      };
+
+      // Donut 1: Període actual
+      const ctxStatus = document.getElementById('chart-bookings-status-donut');
+      if (ctxStatus) {
+        if (chartBookingsStatusInst) chartBookingsStatusInst.destroy();
+        handleDonutHover('current', null, curDataValues, donutLabels, curColors, curTotalNum);
+        chartBookingsStatusInst = new Chart(ctxStatus, {
+          type: 'doughnut',
+          data: {
+            labels: donutLabels,
+            datasets: [{
+              data: curDataValues,
+              backgroundColor: curColors,
+              borderWidth: 2,
+              borderColor: '#FFFFFF',
+              hoverOffset: 12,
+              hoverBorderWidth: 3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+            onHover: (event, activeElements) => {
+              const canvas = event.native ? event.native.target : (event.target || null);
+              if (activeElements && activeElements.length > 0) {
+                if (canvas) canvas.style.cursor = 'pointer';
+                const index = activeElements[0].index;
+                handleDonutHover('current', index, curDataValues, donutLabels, curColors, curTotalNum);
+              } else {
+                if (canvas) canvas.style.cursor = 'default';
+                handleDonutHover('current', null, curDataValues, donutLabels, curColors, curTotalNum);
+              }
+            },
+            interaction: {
+              mode: 'nearest',
+              intersect: true
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: donutCurrentTooltipOptions
+            },
+            cutout: '66%'
+          }
+        });
+      }
+
+      // Donut 2: Període comparat (garantit visualment al costat si la comparació és activa)
+      if (isComparingBookings) {
+        const ctxStatusComp = document.getElementById('chart-bookings-status-donut-compare');
+        if (ctxStatusComp) {
+          if (chartBookingsStatusCompareInst) chartBookingsStatusCompareInst.destroy();
+          handleDonutHover('compare', null, compDataValues, donutLabels, compColors, compTotalNum);
+          chartBookingsStatusCompareInst = new Chart(ctxStatusComp, {
+            type: 'doughnut',
+            data: {
+              labels: donutLabels,
+              datasets: [{
+                data: compDataValues,
+                backgroundColor: compColors,
+                borderWidth: 2,
+                borderColor: '#FFFFFF',
+                hoverOffset: 12,
+                hoverBorderWidth: 3
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+              onHover: (event, activeElements) => {
+                const canvas = event.native ? event.native.target : (event.target || null);
+                if (activeElements && activeElements.length > 0) {
+                  if (canvas) canvas.style.cursor = 'pointer';
+                  const index = activeElements[0].index;
+                  handleDonutHover('compare', index, compDataValues, donutLabels, compColors, compTotalNum);
+                } else {
+                  if (canvas) canvas.style.cursor = 'default';
+                  handleDonutHover('compare', null, compDataValues, donutLabels, compColors, compTotalNum);
+                }
+              },
+              interaction: {
+                mode: 'nearest',
+                intersect: true
+              },
+              plugins: {
+                legend: { display: false },
+                tooltip: donutCompareTooltipOptions
+              },
+              cutout: '66%'
+            }
+          });
+        }
+      }
+    }
+
+    function renderSalesTabContent(data) {
+      const ctxLine = document.getElementById('chart-sales-revenue-line');
+      if (ctxLine) {
+        if (chartSalesRevenueInst) chartSalesRevenueInst.destroy();
+
+        const pCurrentLabel = getPeriodLabel(analyticsCurrentPeriod);
+        const pCompareLabel = getCompareLabel(analyticsComparePeriod);
+        const isComparing = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+
+        const datasets = [
+          {
+            label: pCurrentLabel,
+            data: data.revenueCurrent,
+            borderColor: '#AF8E63',
+            backgroundColor: 'rgba(175, 142, 99, 0.08)',
+            fill: true,
+            borderWidth: 2.5,
+            tension: 0.35
+          }
+        ];
+
+        if (isComparing) {
+          datasets.push({
+            label: pCompareLabel,
+            data: data.revenueCurrent.map(v => Math.round(v * 0.9)),
+            borderColor: '#C5B7A8',
+            borderDash: [6, 6],
+            fill: false,
+            borderWidth: 2,
+            tension: 0.35
+          });
+        }
+
+        chartSalesRevenueInst = new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: 'index',
+              intersect: false
+            },
+            plugins: {
+              legend: {
+                display: isComparing,
+                position: 'top',
+                align: 'end',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  boxWidth: 6,
+                  boxHeight: 6,
+                  font: { family: 'DM Sans', size: 11, weight: '600' },
+                  color: '#615A52'
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Facturació per línia de negoci (Serveis, Productes, Altres / Botiga) amb suport de comparació visual
+      const ctxBreakdown = document.getElementById('chart-sales-breakdown-bar');
+      if (ctxBreakdown) {
+        if (chartSalesBreakdownInst) chartSalesBreakdownInst.destroy();
+
+        const pCurrentLabel = getPeriodLabel(analyticsCurrentPeriod);
+        const pCompareLabel = getCompareLabel(analyticsComparePeriod);
+        const isComparing = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+
+        const datasets = [
+          {
+            label: pCurrentLabel,
+            data: [5240, 2180, 1000],
+            backgroundColor: '#AF8E63',
+            borderRadius: 6
+          }
+        ];
+
+        if (isComparing) {
+          datasets.push({
+            label: pCompareLabel,
+            data: [4760, 1920, 920],
+            backgroundColor: '#D9C6B0',
+            borderRadius: 6
+          });
+        }
+
+        chartSalesBreakdownInst = new Chart(ctxBreakdown, {
+          type: 'bar',
+          data: {
+            labels: ['Serveis', 'Productes', 'Altres / Botiga'],
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: isComparing,
+                position: 'top',
+                align: 'end',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  boxWidth: 6,
+                  boxHeight: 6,
+                  font: { family: 'DM Sans', size: 11, weight: '600' },
+                  color: '#615A52'
+                }
+              },
+              tooltip: {
+                enabled: true,
+                displayColors: false,
+                backgroundColor: '#2A2621',
+                titleFont: { family: 'DM Sans', size: 12, weight: '700' },
+                bodyFont: { family: 'DM Sans', size: 12 },
+                padding: 10,
+                cornerRadius: 8,
+                callbacks: {
+                  label: function(context) {
+                    const val = context.raw || 0;
+                    return ` ${context.dataset.label}: ${val.toLocaleString('ca-ES')} €`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      renderProductsRankingInContainer("sales-products-ranking-list");
+    }
+
+    function renderClientsTabContent(data) {
+      const cNewTr = document.getElementById("clients-tab-new-trend");
+      const cRecTr = document.getElementById("clients-tab-recurring-trend");
+      const cGroTr = document.getElementById("clients-tab-growth-trend");
+
+      if (analyticsComparePeriod && analyticsComparePeriod !== 'none') {
+        if (cNewTr) { cNewTr.style.display = 'block'; cNewTr.textContent = '↑ +14%'; }
+        if (cRecTr) { cRecTr.style.display = 'block'; cRecTr.textContent = '↑ +5,2%'; }
+        if (cGroTr) { cGroTr.style.display = 'block'; cGroTr.textContent = '↑ +4,8%'; }
+      } else {
+        if (cNewTr) cNewTr.style.display = 'none';
+        if (cRecTr) cRecTr.style.display = 'none';
+        if (cGroTr) cGroTr.style.display = 'none';
+      }
+
+      // 1. Distribució de clients segons nombre de visites (1 cop, 2 cops, 3 cops, 4 cops, 5 cops, 6+ cops)
+      const ctxFreq = document.getElementById('chart-clients-frequency-bar');
+      if (ctxFreq) {
+        if (chartClientsFreqInst) chartClientsFreqInst.destroy();
+
+        const pCurrentLabel = getPeriodLabel(analyticsCurrentPeriod);
+        const pCompareLabel = getCompareLabel(analyticsComparePeriod);
+        const isComparing = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+
+        const datasets = [
+          {
+            label: pCurrentLabel,
+            data: [82, 48, 27, 16, 8, 5],
+            backgroundColor: '#AF8E63',
+            borderRadius: 4
+          }
+        ];
+
+        if (isComparing) {
+          datasets.push({
+            label: pCompareLabel,
+            data: [74, 42, 25, 14, 7, 4],
+            backgroundColor: '#D9C6B0',
+            borderRadius: 4
+          });
+        }
+
+        chartClientsFreqInst = new Chart(ctxFreq, {
+          type: 'bar',
+          data: {
+            labels: ['1 cop', '2 cops', '3 cops', '4 cops', '5 cops', '6+ cops'],
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+              legend: {
+                display: isComparing,
+                position: 'top',
+                align: 'end',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  boxWidth: 6,
+                  boxHeight: 6,
+                  font: { family: 'DM Sans', size: 11, weight: '600' },
+                  color: '#615A52'
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Evolució de la base de clients (Paleta de marca marró suau / caramel #AF8E63)
+      const ctxGrowth = document.getElementById('chart-clients-growth-line');
+      if (ctxGrowth) {
+        if (chartClientsGrowthInst) chartClientsGrowthInst.destroy();
+
+        const pCurrentLabel = getPeriodLabel(analyticsCurrentPeriod);
+        const pCompareLabel = getCompareLabel(analyticsComparePeriod);
+        const isComparing = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+
+        const datasets = [
+          {
+            label: pCurrentLabel,
+            data: [450, 480, 520, 620],
+            borderColor: '#AF8E63',
+            backgroundColor: 'rgba(175, 142, 99, 0.08)',
+            fill: true,
+            borderWidth: 2.5,
+            tension: 0.35
+          }
+        ];
+
+        if (isComparing) {
+          datasets.push({
+            label: pCompareLabel,
+            data: [410, 435, 470, 550],
+            borderColor: '#C5B7A8',
+            borderDash: [6, 6],
+            fill: false,
+            borderWidth: 2,
+            tension: 0.35
+          });
+        }
+
+        chartClientsGrowthInst = new Chart(ctxGrowth, {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: isComparing,
+                position: 'top',
+                align: 'end',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  boxWidth: 6,
+                  boxHeight: 6,
+                  font: { family: 'DM Sans', size: 11, weight: '600' },
+                  color: '#615A52'
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function renderWebTabContent(data) {
+      const ctxWeb = document.getElementById('chart-web-traffic-line');
+      if (ctxWeb) {
+        if (chartWebTrafficInst) chartWebTrafficInst.destroy();
+
+        const pCurrentLabel = getPeriodLabel(analyticsCurrentPeriod);
+        const pCompareLabel = getCompareLabel(analyticsComparePeriod);
+        const isComparing = analyticsComparePeriod && analyticsComparePeriod !== 'none';
+
+        const datasets = [
+          {
+            label: pCurrentLabel,
+            data: [420, 480, 510, 490, 620, 680, 220],
+            borderColor: '#8D847E',
+            backgroundColor: 'rgba(141, 132, 126, 0.08)',
+            fill: true,
+            borderWidth: 2.5,
+            tension: 0.35
+          }
+        ];
+
+        if (isComparing) {
+          datasets.push({
+            label: pCompareLabel,
+            data: [380, 430, 460, 440, 550, 600, 190],
+            borderColor: '#C5B7A8',
+            borderDash: [6, 6],
+            fill: false,
+            borderWidth: 2,
+            tension: 0.35
+          });
+        }
+
+        chartWebTrafficInst = new Chart(ctxWeb, {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: isComparing,
+                position: 'top',
+                align: 'end',
+                labels: {
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  boxWidth: 6,
+                  boxHeight: 6,
+                  font: { family: 'DM Sans', size: 11, weight: '600' },
+                  color: '#615A52'
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // PÀGINES MÉS VISITADES (NOMS HUMANS PRIMER, URLS COMPACTES I DISCRETES AMB COMPARACIÓ)
+      const container = document.getElementById("web-pages-ranking-list");
+      if (container) {
+        const pages = [
+          { num: 1, name: 'Reserves', url: '/reserves', visits: '1.840 visites', trend: '↑ +14%' },
+          { num: 2, name: 'Serveis i tarifes', url: '/serveis-i-tarifes', visits: '920 visites', trend: '↓ -3%' },
+          { num: 3, name: 'Equip i estudi', url: '/equip-i-estudi', visits: '410 visites', trend: '↑ +8%' },
+          { num: 4, name: 'Botiga online', url: '/botiga-online', visits: '250 visites', trend: '↑ +5%' }
+        ];
+        container.innerHTML = pages.map(p => `
+          <div class="ranking-item">
+            <div class="ranking-left">
+              <span class="ranking-num">${p.num}</span>
+              <div>
+                <div class="ranking-name" style="font-weight:700; font-size:0.92rem;">${p.name}</div>
+                <div style="font-size:0.73rem; color:var(--text-muted); font-family:monospace;">${p.url}</div>
+              </div>
+            </div>
+            <div class="ranking-right">
+              <div class="ranking-revenue" style="font-size:0.88rem; font-weight:700;">${p.visits}${formatTrendSpan(p.trend)}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // CERCADOR DE LA WEB AMB SUPORT DE COMPARACIÓ
+      const tbody = document.getElementById("web-search-table-body");
+      if (tbody) {
+        const searches = [
+          { query: 'xampú sense sulfats', count: 47, trend: '↑ +18%', results: 0, status: '<span class="zero-results-badge">⭐ Oportunitat comercial (0 resultats)</span>' },
+          { query: 'oli reparador', count: 32, trend: '↑ +9%', results: 4, status: '<span style="color:#2E7D32; font-weight:600;">✓ Amb estoc</span>' },
+          { query: 'xampú hidratant', count: 28, trend: '↑ +12%', results: 6, status: '<span style="color:#2E7D32; font-weight:600;">✓ Amb estoc</span>' },
+          { query: 'protector tèrmic', count: 21, trend: '↓ -6%', results: 3, status: '<span style="color:#AF8E63; font-weight:600;">↑ Alta demanda</span>' }
+        ];
+        tbody.innerHTML = searches.map(s => `
+          <tr>
+            <td style="font-weight:700;">${s.query}</td>
+            <td>${s.count} cerques${formatTrendSpan(s.trend)}</td>
+            <td>${s.results === 0 ? '<strong style="color:#E65100;">0</strong>' : s.results}</td>
+            <td>${s.status}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function formatTrendSpan(trend) {
+      if (!analyticsComparePeriod || analyticsComparePeriod === 'none' || !trend) {
+        return '';
+      }
+      let color = '#615A52'; // neutre
+      if (trend.includes('↑') || trend.includes('+')) {
+        color = '#2E7D32'; // verd suau i elegant
+      } else if (trend.includes('↓') || trend.includes('-')) {
+        color = '#C64949'; // vermell/terracota suau
+      }
+      return ` · <span style="color: ${color}; font-weight: 700;">${trend}</span>`;
+    }
+
+    function renderProductsRankingInContainer(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const products = [
+        { num: 1, name: 'Xampú hidratant', units: '42 unitats', revenue: '1.260 €', trend: '↑ +18%' },
+        { num: 2, name: 'Oli reparador', units: '31 unitats', revenue: '930 €', trend: '↑ +12%' },
+        { num: 3, name: 'Mascarilla nutritiva', units: '27 unitats', revenue: '810 €', trend: '↑ +5%' },
+        { num: 4, name: 'Protector tèrmic', units: '21 unitats', revenue: '630 €', trend: '↑ +24%' }
+      ];
+      container.innerHTML = products.map(p => `
+        <div class="ranking-item">
+          <div class="ranking-left">
+            <span class="ranking-num">${p.num}</span>
+            <div>
+              <div class="ranking-name">${p.name}</div>
+              <div class="ranking-sub">${p.units}${formatTrendSpan(p.trend)}</div>
+            </div>
+          </div>
+          <div class="ranking-right">
+            <div class="ranking-revenue">${p.revenue}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderServicesRankingInContainer(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const services = [
+        { num: 1, name: 'Tall', units: '86 reserves', revenue: '3.440 €', trend: '↑ +14%' },
+        { num: 2, name: 'Coloració', units: '54 reserves', revenue: '2.970 €', trend: '↑ +9%' },
+        { num: 3, name: 'Pentinat', units: '42 reserves', revenue: '1.050 €', trend: '↑ +6%' },
+        { num: 4, name: 'Tractament', units: '31 reserves', revenue: '960 €', trend: '↑ +15%' }
+      ];
+      container.innerHTML = services.map(s => `
+        <div class="ranking-item">
+          <div class="ranking-left">
+            <span class="ranking-num">${s.num}</span>
+            <div>
+              <div class="ranking-name">${s.name}</div>
+              <div class="ranking-sub">${s.units}${formatTrendSpan(s.trend)}</div>
+            </div>
+          </div>
+          <div class="ranking-right">
+            <div class="ranking-revenue">${s.revenue}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderHeatmapInContainer(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const days = ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'];
+      const timeSlots = ['09-11h', '11-13h', '13-15h', '15-17h', '17-19h'];
+      const matrix = [
+        [1, 3, 1, 2, 3], [2, 3, 1, 2, 4], [2, 4, 1, 3, 4],
+        [2, 3, 1, 3, 4], [3, 4, 2, 4, 4], [4, 4, 3, 4, 4], [0, 0, 0, 0, 0]
+      ];
+      let html = '<div class="heatmap-grid"><div></div>';
+      days.forEach(d => html += `<div class="heatmap-header-cell">${d}</div>`);
+      timeSlots.forEach((slot, sIdx) => {
+        html += `<div class="heatmap-time-cell">${slot}</div>`;
+        days.forEach((d, dIdx) => {
+          const lvl = matrix[dIdx][sIdx];
+          const label = lvl === 0 ? '—' : (lvl === 4 ? 'Max' : `${lvl * 25}%`);
+          html += `<div class="heatmap-data-cell heat-lvl-${lvl}">${label}</div>`;
+        });
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
